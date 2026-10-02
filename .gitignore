@@ -27,6 +27,9 @@ chrome-profile*/
 # ---- git 自身 ----
 .gitignore.bak
 
+# ---- 本地运维小工具（不属于学习资料，不入库）----
+_tools/
+
 # ---- 编辑器 / 系统 ----
 .vscode/
 .idea/
