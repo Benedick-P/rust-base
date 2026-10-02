@@ -1,0 +1,20 @@
+﻿rustc : error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable
+At line:4 char:3
++   rustc --edition 2021 --crate-type bin $_.FullName -o "D:\rust学习\_ve ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0502]: c...ed as immutable:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\_verify\cases\e0502_vec.rs:4:5
+  |
+3 |     let first = &v[0];
+  |                  - immutable borrow occurs here
+4 |     v.push(4);
+  |     ^^^^^^^^^ mutable borrow occurs here
+5 |     println!("{first}");
+  |                ----- immutable borrow later used here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0502`.
+

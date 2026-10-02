@@ -1,0 +1,12 @@
+﻿=== 运行时 panic ===
+panic_emoji_slice.exe : 
+At line:18 char:11
++   $run = (& $o 2>&1 | Out-String)
++           ~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+thread 'main' (17096) panicked at D:\rust学习\数据类型\_verify\cases\panic_emoji_slice.rs:3:23:
+end byte index 2 is not a char boundary; it is inside '🦀' (bytes 0..4 of string)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+

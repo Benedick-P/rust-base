@@ -1,0 +1,241 @@
+%% Rust 控制流 · 思维导图（Mermaid mindmap）
+%%
+%% 用法：把本文件内容粘到 https://mermaid.live 即可看图；
+%%       Obsidian / Typora / GitHub 的 mermaid 代码块也支持 mindmap 图类型。
+%% 说明：为保证各版本 Mermaid 都能解析，节点文本避开了括号 / 冒号 / 引号等特殊字符。
+%%       完整可交互版请用同目录的「控制流-思维导图.html」。
+
+mindmap
+  root))Rust 控制流((
+    0 两条总规则
+      控制流都是表达式
+        都有值 可以 let 赋值
+        if 有值 但要写 else
+        match 有值
+        loop 有值 由 break 决定
+      条件必须是 bool
+        没有隐式转换
+        不能写 if x
+        必须写 if x 不等于 0
+        没有三元运算符
+    1 if 与 else
+      条件必须 bool
+        if x 报 E0308
+        报错 expected bool found integer
+        显式写比较
+      是表达式可以赋值
+        可以 let 绑定 if 的值
+        两分支类型必须相同
+        类型不同报 E0308
+      没有 else 时值是单元类型
+        恒为单元值
+        只能当语句用
+        赋值报 E0317
+        报错 if may be missing an else clause
+      else if 链
+        多分支判断
+        复杂布尔条件用 if
+        字面量多分支用 match 更清晰
+      括号与花括号
+        花括号必需
+        条件不需要括号
+        加括号会有 unused_parens 警告
+    2 match 分支匹配
+      基本形态
+        模式 箭头 表达式
+        arm 之间用逗号
+        块体 arm 逗号可省
+        内部数据可解构
+      必须穷尽
+        漏分支报 E0004
+        加下划线兜底
+        枚举要列全变体
+        编译器会指出漏了什么
+      常用模式
+        字面量
+        或模式 竖线
+        区间模式 含两端
+        半开区间
+        变量绑定
+        下划线通配
+        枚举与元组解构
+        切片与结构体解构
+        守卫 if 条件
+      守卫限制
+        只能用 match 里绑定的变量
+        不能用外部变量
+      分号与逗号规则
+        arm 之间用逗号
+        用分号报 match arm body without braces
+        arm 体加分号会变成单元值
+        导致 E0308 分支类型不一致
+      不可达模式
+        只是警告不是错误
+        具体模式要写在前
+        下划线放最后
+      何时用 match
+        枚举与 Option 与 Result
+        多个互斥字面量或范围
+        需要编译器查穷尽性
+    3 三种循环
+      loop 无限循环
+        必须靠 break 跳出
+        break 可以带值
+        各 break 值类型必须一致
+        无值时类型是单元
+      while 条件循环
+        条件是 bool
+        每轮重新求值
+        条件不变会死循环
+        while true 建议改 loop
+      for 遍历迭代器
+        最常用也最安全
+        没有 C 风格 for
+        区间写法 含与不含端点
+        倒序 rev
+        步长 step_by
+        下标 enumerate
+      break 与 continue
+        只能在循环内
+        循环外用 break 报 E0268
+        例外 带标签块可以 break
+      for 与所有权
+        遍历引用 不可变借用
+        遍历可变引用 可改元素
+        按值遍历 消费容器
+        循环内 push 报 E0502
+        改长度会漏项或越界
+    4 循环标签
+      语法
+        标签以单引号开头
+        写在循环关键字前
+        命名用小写蛇形
+      break 与 continue 带标签
+        break 标签 跳出多层
+        continue 标签 外层进下一轮
+      带标签块
+        可当小型 return 用
+        break 值与块尾值类型要一致
+    5 if let 与 while let
+      if let
+        只关心一种模式
+        等价于 match 加空分支
+        可以带 else
+        没有穷尽性检查
+        多分支请用 match
+      while let
+        循环匹配直到失败
+        适合 pop 与 next
+        循环体不改变值会死循环
+      let else
+        不匹配就提前返回
+        else 块必须发散
+        末尾分号不能省
+        模式必须可反驳
+        报 E0005 时可加 else 修复
+        卫语句风格 主逻辑不缩进
+      if let 链的版本要求
+        edition 2024 才支持
+        2021 报 let chains 错误
+        2021 可用嵌套写法
+        或用 match 匹配元组
+        while let 链同理
+    6 语句与表达式
+      尾表达式
+        最后一行不带分号是值
+        带分号变成语句
+        函数返回单元会类型不匹配
+      块的值
+        块最后一行决定值
+        if 分支里加分号会变异
+      分号与逗号规定
+        语句用分号
+        match arm 用逗号
+        let else 后必须有分号
+        结构体字段用逗号
+      提前返回
+        return 是语句 要分号
+        末尾用尾表达式
+        两者别混着写
+    7 常见报错速查
+      类型类
+        E0308 条件不是 bool
+        E0308 两分支类型不同
+        E0308 match 分支类型不同
+        E0308 各 break 值类型不同
+        E0317 if 缺少 else
+      模式类
+        E0004 匹配不穷尽
+        E0005 let 用了可反驳模式
+      语法类
+        E0268 循环外使用 break
+        match arm 误用分号
+        let chains 需要 2024
+      借用类
+        E0502 for 循环内改容器
+      警告类
+        unreachable pattern
+        unused variable
+        unnecessary parentheses
+        while true 建议改 loop
+    8 写法注意事项
+      选对工具
+        枚举与 Result 用 match
+        单模式用 if let
+        卫语句用 let else
+        简单条件用 if
+      避免的写法
+        match 配 bool 代替 if
+        单分支却写长 match
+      循环惯用法
+        enumerate 拿下标
+        iter_mut 就地修改
+        take 取前 N 个
+        filter 加 sum 做累积
+        不要用索引循环顺手 push
+      扁平化控制流
+        先用 let else 处理异常
+        再用 return 提前退出
+        主逻辑不缩进
+      下划线的取舍
+        下划线不绑定
+        下划线加名字会绑定但抑制警告
+        只是计数用下划线
+    9 常见误区
+      if 相关
+        不能像 C 一样判断非零
+        没有三元运算符
+        没有 else 就没有值
+        两分支类型必须一致
+      match 相关
+        不能只写几个分支
+        arm 用逗号不是分号
+        不可达只是警告
+      循环相关
+        break 不能当 return
+        for 里不能随便改长度
+        while let 可能死循环
+      版本相关
+        if let 链需要 2024
+        while let 链同理
+      分号相关
+        分号决定值是值还是单元
+        报错像打印问题其实是分号
+    10 自测清单
+      语法规则
+        if x 能编译吗
+        if 没 else 赋值报什么错
+        match arm 用什么分隔
+        arm 加分号会怎样
+        loop 的值由什么决定
+        break 能在循环外吗
+      版本差异
+        if let 链在 2021 下能编译吗
+        等价写法是什么
+      实践选择
+        match 与 if let 与 let else 各用于什么
+        三种 for 写法的区别
+        索引循环里 push 的隐患
+        倒序与步长怎么写
+        标签 continue 的含义
+        分号如何决定返回值

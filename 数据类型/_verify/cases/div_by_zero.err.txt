@@ -1,0 +1,12 @@
+﻿=== 运行时 panic ===
+div_by_zero.exe : 
+At line:10 char:11
++   $run = (& $o 2>&1 | Out-String)
++           ~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+thread 'main' (46636) panicked at D:\rust学习\数据类型\_verify\cases\div_by_zero.rs:7:13:
+attempt to divide by zero
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+

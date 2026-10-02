@@ -1,0 +1,42 @@
+﻿rustc : warning: field `0` is never read
+At line:6 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: field `0` is never read:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\数据类型\_verify\cases\ok_hetero.rs:6:16
+  |
+6 |     enum E { I(i32), S(String) }
+  |              - ^^^
+  |              |
+  |              field in this variant
+  |
+  = note: `E` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or r
+emove the field
+  |
+6 -     enum E { I(i32), S(String) }
+6 +     enum E { I(()), S(String) }
+  |
+
+warning: field `0` is never read
+ --> D:\rust学习\数据类型\_verify\cases\ok_hetero.rs:6:24
+  |
+6 |     enum E { I(i32), S(String) }
+  |                      - ^^^^^^
+  |                      |
+  |                      field in this variant
+  |
+  = note: `E` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or r
+emove the field
+  |
+6 -     enum E { I(i32), S(String) }
+6 +     enum E { I(i32), S(()) }
+  |
+
+warning: 2 warnings emitted
+
+

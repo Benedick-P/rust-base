@@ -1,0 +1,31 @@
+﻿rustc : error[E0599]: the method `insert` exists for struct `HashMap<f64, &str>`, but its trait bounds were not satisfie
+d
+At line:8 char:1
++ rustc --edition 2021 "$dir\e12_f64_key.rs" -o "$dir\fk.exe" 2> $out
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0599]: t...e not satisfied:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\数据类型\_verify\cases\e12_f64_key.rs:6:7
+  |
+6 |     m.insert(1.0, "one");
+  |       ^^^^^^
+  |
+  = note: the following trait bounds were not satisfied:
+          `f64: Eq`
+          `f64: Hash`
+
+error[E0599]: the method `get` exists for struct `HashMap<f64, &str>`, but its trait bounds were not satisfied
+ --> D:\rust学习\数据类型\_verify\cases\e12_f64_key.rs:7:24
+  |
+7 |     println!("{:?}", m.get(&1.0));
+  |                        ^^^ method cannot be called on `HashMap<f64, &str>` due to unsatisfied trait bounds
+  |
+  = note: the following trait bounds were not satisfied:
+          `f64: Eq`
+          `f64: Hash`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0599`.
+

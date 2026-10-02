@@ -1,0 +1,43 @@
+﻿rustc : error[E0277]: `P` doesn't implement `Debug`
+At line:6 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0277]: `...plement `Debug`:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\数据类型\_verify\cases\e7_no_derive.rs:4:15
+  |
+4 |     println!("{p:?}");
+  |               ^^^^^ `P` cannot be formatted using `{:?}` because it doesn't implement `Debug`
+  |
+  = help: the trait `Debug` is not implemented for `P`
+help: consider annotating `P` with `#[derive(Debug)]`
+  |
+1 + #[derive(Debug)]
+2 | struct P { x: i32 }
+  |
+
+error[E0369]: binary operation `==` cannot be applied to type `P`
+ --> D:\rust学习\数据类型\_verify\cases\e7_no_derive.rs:5:22
+  |
+5 |     println!("{}", p == P { x: 1 });
+  |                    - ^^ ---------- P
+  |                    |
+  |                    P
+  |
+note: an implementation of `PartialEq` might be missing for `P`
+ --> D:\rust学习\数据类型\_verify\cases\e7_no_derive.rs:1:1
+  |
+1 | struct P { x: i32 }
+  | ^^^^^^^^ must implement `PartialEq`
+help: consider annotating `P` with `#[derive(PartialEq)]`
+  |
+1 + #[derive(PartialEq)]
+2 | struct P { x: i32 }
+  |
+
+error: aborting due to 2 previous errors
+
+Some errors have detailed explanations: E0277, E0369.
+For more information about an error, try `rustc --explain E0277`.
+

@@ -1,0 +1,35 @@
+﻿rustc : error[E0571]: `break` with value from a `while` loop
+At line:4 char:3
++   rustc --edition 2021 "$dir\$n.rs" -o $o 2> "$dir\$n.err.txt"
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0571]: `... a `while` loop:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\控制流\_verify\cases\e14_while_break_value.rs:7:13
+  |
+4 |     let r = while i < 5 {
+  |             ----------- you can't `break` with a value in a `while` loop
+...
+7 |             break i * 2;
+  |             ^^^^^^^^^^^ can only break with a value inside `loop` or breakable block
+  |
+help: use `break` on its own without a value inside this `while` loop
+  |
+7 -             break i * 2;
+7 +             break;
+  |
+
+error[E0277]: `()` doesn't implement `std::fmt::Display`
+  --> D:\rust学习\控制流\_verify\cases\e14_while_break_value.rs:10:15
+   |
+10 |     println!("{r}");
+   |               ^^^ `()` cannot be formatted with the default formatter
+   |
+   = help: the trait `std::fmt::Display` is not implemented for `()`
+   = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+
+error: aborting due to 2 previous errors
+
+Some errors have detailed explanations: E0277, E0571.
+For more information about an error, try `rustc --explain E0277`.
+

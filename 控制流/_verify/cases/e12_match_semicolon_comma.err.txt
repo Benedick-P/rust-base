@@ -1,0 +1,51 @@
+﻿rustc : error: `match` arm body without braces
+At line:5 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error: `match` arm body without braces:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\控制流\_verify\cases\e12_match_semicolon_comma.rs:4:14
+  |
+4 |         5 => "五";
+  |           -- ^^^^ this statement is not surrounded by a body
+  |           |
+  |           while parsing the `match` arm starting here
+  |
+help: replace `;` with `,` to end a `match` arm expression
+  |
+4 -         5 => "五";
+4 +         5 => "五",
+  |
+
+error: `match` arm body without braces
+ --> D:\rust学习\控制流\_verify\cases\e12_match_semicolon_comma.rs:5:14
+  |
+5 |         4 => "四";
+  |           -- ^^^^ this statement is not surrounded by a body
+  |           |
+  |           while parsing the `match` arm starting here
+  |
+help: replace `;` with `,` to end a `match` arm expression
+  |
+5 -         4 => "四";
+5 +         4 => "四",
+  |
+
+error: `match` arm body without braces
+ --> D:\rust学习\控制流\_verify\cases\e12_match_semicolon_comma.rs:6:14
+  |
+6 |         _ => "其他";
+  |           -- ^^^^^^ this statement is not surrounded by a body
+  |           |
+  |           while parsing the `match` arm starting here
+  |
+help: replace `;` with `,` to end a `match` arm expression
+  |
+6 -         _ => "其他";
+6 +         _ => "其他",
+  |
+
+error: aborting due to 3 previous errors
+
+

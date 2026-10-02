@@ -1,0 +1,17 @@
+﻿rustc : error: this arithmetic operation will overflow
+At line:6 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error: this ari...n will overflow:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\数据类型\_verify\cases\overflow_debug.rs:3:13
+  |
+3 |     let b = a + 1; // debug 模式下溢出 panic
+  |             ^^^^^ attempt to compute `u8::MAX + 1_u8`, which would overflow
+  |
+  = note: `#[deny(arithmetic_overflow)]` on by default
+
+error: aborting due to 1 previous error
+
+

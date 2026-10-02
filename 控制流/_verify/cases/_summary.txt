@@ -1,0 +1,15 @@
+e10_let_else_no_diverge	E0005	rustc : error[E0005]: refutable pattern in local binding
+e11_semicolon_block	E0277	rustc : error[E0277]: `()` doesn't implement `std::fmt::Display`
+e12_match_semicolon_comma		rustc : error: `match` arm body without braces
+e13_match_value_unused		rustc : warning: variant `B` is never constructed
+e14_while_break_value	E0571	rustc : error[E0571]: `break` with value from a `while` loop
+e15_semicolon_in_block	E0308	rustc : error[E0308]: mismatched types
+e1_if_type	E0308	rustc : error[E0308]: `if` and `else` have incompatible types
+e2_if_not_bool	E0308	rustc : error[E0308]: mismatched types
+e3_if_no_else	E0317	rustc : error[E0317]: `if` may be missing an `else` clause
+e4_match_not_exhaustive	E0004	rustc : error[E0004]: non-exhaustive patterns: `i32::MIN..=0_i32` and `4_i32..=i32::MAX` not covered
+e5_unreachable_arm		rustc : warning: unreachable pattern
+e6_break_outside	E0268	rustc : error[E0268]: `break` outside of a loop or labeled block
+e7_match_arm_type	E0308	rustc : error[E0308]: `match` arms have incompatible types
+e8_break_value_type	E0308	rustc : error[E0308]: mismatched types
+e9_for_move_then_use	E0502	rustc : error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable

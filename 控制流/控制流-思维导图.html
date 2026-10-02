@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rust 控制流 · 思维导图</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif; }
+  #app { position: relative; width: 100%; height: 100%; }
+  #mindmap { display: block; width: 100%; height: 100%; }
+
+  #hud {
+    position: fixed; left: 14px; top: 12px; z-index: 10;
+    display: flex; flex-direction: column; gap: 6px;
+    background: rgba(255,255,255,.92); backdrop-filter: blur(6px);
+    border: 1px solid #e3e8ef; border-radius: 10px;
+    padding: 9px 11px; width: 300px;
+    box-shadow: 0 6px 22px rgba(16,24,40,.10);
+    transition: opacity .25s, transform .25s;
+  }
+  #hud.hidden { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+  #hud .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  #hud .brand {
+    font-size: 9.5px; font-weight: 600; letter-spacing: .4px;
+    color: #1570ef; background: #eff8ff; border: 1px solid #b2ddff;
+    border-radius: 999px; padding: 1px 7px; white-space: nowrap;
+  }
+  #hud .stat { font-size: 10px; color: #98a2b3; white-space: nowrap; }
+  #hud h1 { margin: 0; font-size: 13.5px; color: #101828; }
+  #hud p { margin: 0; font-size: 10.5px; line-height: 1.55; color: #667085; }
+  #hud kbd {
+    background: #f2f4f7; border: 1px solid #d0d5dd; border-bottom-width: 2px;
+    border-radius: 3px; padding: 0 4px; font-size: 10px; color: #344054;
+    font-family: ui-monospace, Consolas, monospace;
+  }
+  #hud a { color: #1570ef; text-decoration: none; }
+  #hud a:hover { text-decoration: underline; }
+  .row { display: flex; gap: 4px; flex-wrap: wrap; }
+  .row button {
+    font: inherit; font-size: 9.5px; padding: 3px 6px; cursor: pointer; white-space: nowrap;
+    border: 1px solid #d0d5dd; background: #fff; border-radius: 5px; color: #344054;
+  }
+  .row button:hover { background: #f9fafb; border-color: #98a2b3; }
+  .row button:active { background: #f2f4f7; }
+  #hint { font-size: 10px; color: #98a2b3; }
+
+  #status {
+    position: fixed; inset: 0; display: grid; place-items: center;
+    background: #fff; z-index: 20; text-align: center; padding: 24px;
+  }
+  #status.hidden { display: none; }
+  #status .box { max-width: 620px; font-size: 13.5px; color: #475467; line-height: 1.85; }
+  #status .box b { color: #101828; }
+  #status code {
+    background: #f2f4f7; padding: 1px 5px; border-radius: 4px;
+    font-family: ui-monospace, Consolas, monospace; font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <svg id="mindmap"></svg>
+
+  <div id="hud">
+    <div class="topbar">
+      <span class="brand">RUST · CONTROL FLOW</span>
+      <span class="stat" id="stat">—</span>
+    </div>
+    <h1>Rust 控制流 · 语法与注意事项</h1>
+    <p>
+      <kbd>滚轮</kbd> 缩放 · <kbd>拖拽</kbd> 平移<br>
+      <kbd>点击圆点/文字</kbd> 折叠展开 · <kbd>H</kbd> 隐藏面板
+    </p>
+    <div class="row">
+      <button id="btn-collapse">只看主干</button>
+      <button id="btn-l2">展开二级</button>
+      <button id="btn-expand">全部展开</button>
+      <button id="btn-fit">适应窗口</button>
+    </div>
+    <div class="row">
+      <button id="btn-png">导出 PNG</button>
+      <button id="btn-svg">导出 SVG</button>
+    </div>
+    <p id="hint">默认只展开到章节级；点圆点逐层展开，或用上面的按钮。<br>
+      离线打不开？用 VS Code 的 <a href="https://marketplace.visualstudio.com/items?itemName=gera2ld.markmap-vscode" target="_blank" rel="noreferrer">Markmap 插件</a>打开
+      <code>控制流-思维导图.mindmap.md</code></p>
+  </div>
+
+  <div id="status"><div class="box">正在加载思维导图渲染库…</div></div>
+</div>
+
+<!-- 思维导图内容（base64 内嵌，避免 file:// 下的跨域读取限制） -->
+<script id="mm-data" type="application/octet-stream">IyBSdXN0IOaOp+WItua1gQoKIyMgMC4g5Lik5p2h5oC76KeE5YiZCgojIyMg5oC76KeE5YiZIDEg5o6n5Yi25rWB6YO95piv6KGo6L6+5byPCi0g6YO95pyJ5YC8IOWPr+S7pSBsZXQg6LWL5YC8Ci0gaWYg5pyJ5YC8IOS9huimgeWGmSBlbHNlCi0gbWF0Y2gg5pyJ5YC8Ci0gbG9vcCDmnInlgLwg55SxIGJyZWFrIOWGs+WumgoKIyMjIOaAu+inhOWImSAyIOadoeS7tuW/hemhu+aYryBib29sCi0g5rKh5pyJ6ZqQ5byP6L2s5o2iCi0g5LiN6IO95YaZIGlmIHgKLSDlv4XpobsgaWYgeCDkuI3nrYnkuo4gMAotIOayoeacieS4ieWFg+i/kOeul+espgoKIyMgMS4gaWYg5LiOIGVsc2UKCiMjIyDmnaHku7blv4XpobsgYm9vbAotIGlmIHgg5oqlIEUwMzA4Ci0g5oql6ZSZIGV4cGVjdGVkIGJvb2wgZm91bmQgaW50ZWdlcgotIOaYvuW8j+WGmeavlOi+gwoKIyMjIOaYr+ihqOi+vuW8j+WPr+S7pei1i+WAvAotIGxldCBzIOetieS6jiBpZiBjIOWKoOS4pOWdlwotIOS4pOWIhuaUr+exu+Wei+W/hemhu+ebuOWQjAotIOexu+Wei+S4jeWQjOaKpSBFMDMwOAoKIyMjIOayoeaciSBlbHNlIOaXtuWAvOaYr+WNleWFg+exu+WeiwotIOaBkuS4uuWNleWFg+WAvAotIOWPquiDveW9k+ivreWPpQotIOi1i+WAvOaKpSBFMDMxNwotIOaKpemUmSBpZiBtYXkgYmUgbWlzc2luZyBhbiBlbHNlIGNsYXVzZQoKIyMjIGVsc2UgaWYg6ZO+Ci0g5aSa5YiG5pSv5Yik5patCi0g5aSN5p2C5biD5bCU5p2h5Lu255SoIGlmCi0g5a2X6Z2i6YeP5aSa5YiG5pSv55SoIG1hdGNoIOabtOa4heaZsAoKIyMjIOaLrOWPt+S4juiKseaLrOWPtwotIOiKseaLrOWPt+W/hemcgAotIOadoeS7tuS4jemcgOimgeaLrOWPtwotIOWKoOaLrOWPt+aciSB1bnVzZWRfcGFyZW5zIOitpuWRigoKIyMgMi4gbWF0Y2gg5YiG5pSv5Yy56YWNCgojIyMg5Z+65pys5b2i5oCBCi0g5qih5byPIOeureWktCDooajovr7lvI8KLSBhcm0g5LmL6Ze055So6YCX5Y+3Ci0g5Z2X5L2TIGFybSDpgJflj7flj6/nnIEKLSDlhoXpg6jmlbDmja7lj6/op6PmnoQKCiMjIyDlv4XpobvnqbflsL0KLSDmvI/liIbmlK/miqUgRTAwMDQKLSDliqDkuIvliJLnur/lhZzlupUKLSDmnprkuL7opoHliJflhajlj5jkvZMKLSDnvJbor5HlmajkvJrmjIflh7rmvI/kuobku4DkuYgKCiMjIyDluLjnlKjmqKHlvI8KLSDlrZfpnaLph48KLSDmiJbmqKHlvI/nq5bnur8KLSDljLrpl7TmqKHlvI8g5ZCr5Lik56uvCi0g5Y2K5byA5Yy66Ze0Ci0g5Y+Y6YeP57uR5a6aCi0g5LiL5YiS57q/6YCa6YWNCi0g5p6a5Li+5LiO5YWD57uE6Kej5p6ECi0g5YiH54mH5LiO57uT5p6E5L2T6Kej5p6ECi0g5a6I5Y2rIGlmIOadoeS7tgoKIyMjIOWuiOWNq+mZkOWItgotIOWPquiDveeUqCBtYXRjaCDph4znu5HlrprnmoTlj5jph48KLSDkuI3og73nlKjlpJbpg6jlj5jph48KLSDkuI3og73nlKjlh73mlbDosIPnlKjku6XlpJbnmoTmlrnlvI/mlLnlj5jljLnphY3lgLwKCiMjIyDliIblj7fkuI7pgJflj7fop4TliJkKLSBhcm0g5LmL6Ze055So6YCX5Y+3Ci0g55So5YiG5Y+35oqlIG1hdGNoIGFybSBib2R5IHdpdGhvdXQgYnJhY2VzCi0gYXJtIOS9k+WKoOWIhuWPt+S8muWPmOaIkOWNleWFg+WAvAotIOWvvOiHtCBFMDMwOCDliIbmlK/nsbvlnovkuI3kuIDoh7QKCiMjIyDkuI3lj6/ovr7mqKHlvI8KLSDlj6rmmK/orablkYrkuI3mmK/plJnor68KLSDlhbfkvZPmqKHlvI/opoHlhpnlnKjliY0KLSDkuIvliJLnur/mlL7mnIDlkI4KCiMjIyDkvZXml7bnlKggbWF0Y2gKLSDmnprkuL7kuI4gT3B0aW9uIOS4jiBSZXN1bHQKLSDlpJrkuKrkupLmlqXlrZfpnaLph4/miJbojIPlm7QKLSDpnIDopoHnvJbor5Hlmajmn6XnqbflsL3mgKcKCiMjIDMuIOS4ieenjeW+queOrwoKIyMjIGxvb3Ag5peg6ZmQ5b6q546vCi0g5b+F6aG76Z2gIGJyZWFrIOi3s+WHugotIGJyZWFrIOWPr+S7peW4puWAvAotIOWQhCBicmVhayDlgLznsbvlnovlv4XpobvkuIDoh7QKLSDml6DlgLzml7bnsbvlnovmmK/ljZXlhYMKCiMjIyB3aGlsZSDmnaHku7blvqrnjq8KLSDmnaHku7bmmK8gYm9vbAotIOavj+i9rumHjeaWsOaxguWAvAotIOadoeS7tuS4jeWPmOS8muatu+W+queOrwotIHdoaWxlIHRydWUg5bu66K6u5pS5IGxvb3AKCiMjIyBmb3Ig6YGN5Y6G6L+t5Luj5ZmoCi0g5pyA5bi455So5Lmf5pyA5a6J5YWoCi0g5rKh5pyJIEMg6aOO5qC8IGZvcgotIOWMuumXtOWGmeazlSDlkKvkuI7kuI3lkKvnq6/ngrkKLSDlgJLluo8gcmV2Ci0g5q2l6ZW/IHN0ZXBfYnkKLSDkuIvmoIcgZW51bWVyYXRlCgojIyMgYnJlYWsg5LiOIGNvbnRpbnVlCi0g5Y+q6IO95Zyo5b6q546v5YaFCi0g5b6q546v5aSW55SoIGJyZWFrIOaKpSBFMDI2OAotIOS+i+WkliDluKbmoIfnrb7lnZflj6/ku6UgYnJlYWsKCiMjIyBmb3Ig5LiO5omA5pyJ5p2DCi0g6YGN5Y6G5byV55SoIOS4jeWPr+WPmOWAn+eUqAotIOmBjeWOhuWPr+WPmOW8leeUqCDlj6/mlLnlhYPntKAKLSDmjInlgLzpgY3ljoYg5raI6LS55a655ZmoCi0g5b6q546v5YaFIHB1c2gg5oqlIEUwNTAyCi0g5pS56ZW/5bqm5Lya5ryP6aG55oiW6LaK55WMCgojIyA0LiDlvqrnjq/moIfnrb4KCiMjIyDor63ms5UKLSDmoIfnrb7ku6XljZXlvJXlj7flvIDlpLQKLSDlhpnlnKjlvqrnjq/lhbPplK7lrZfliY0KLSDlkb3lkI3nlKjlsI/lhpnom4flvaIKCiMjIyBicmVhayDkuI4gY29udGludWUg5bim5qCH562+Ci0gYnJlYWsg5qCH562+IOi3s+WHuuWkmuWxggotIGNvbnRpbnVlIOagh+etviDlpJblsYLov5vkuIvkuIDova4KLSDmoIfnrb7lnZflj6/ku6UgYnJlYWsg5bim5YC8CgojIyMg5bim5qCH562+5Z2XCi0g5Y+v5b2T5bCP5Z6LIHJldHVybiDnlKgKLSBicmVhayDlgLzkuI7lnZflsL7lgLznsbvlnovopoHkuIDoh7QKCiMjIDUuIGlmIGxldCDkuI4gd2hpbGUgbGV0CgojIyMgaWYgbGV0Ci0g5Y+q5YWz5b+D5LiA56eN5qih5byPCi0g562J5Lu35LqOIG1hdGNoIOWKoOepuuWIhuaUrwotIOWPr+W4piBlbHNlCi0g5rKh5pyJ56m35bC95oCn5qOA5p+lCi0g5aSa5YiG5pSv6K+355SoIG1hdGNoCgojIyMgd2hpbGUgbGV0Ci0g5b6q546v5Yy56YWN55u05Yiw5aSx6LSlCi0g6YCC5ZCIIHBvcCDkuI4gbmV4dAotIOW+queOr+S9k+S4jeaUueWPmOWAvOS8muatu+W+queOrwoKIyMjIGxldCBlbHNlCi0g5LiN5Yy56YWN5bCx5o+Q5YmN6L+U5ZueCi0gZWxzZSDlnZflv4Xpobvlj5HmlaMKLSDmnKvlsL7liIblj7fkuI3og73nnIEKLSDmqKHlvI/lv4Xpobvlj6/lj43pqbMKLSDmiqUgRTAwMDUg5pe25Y+v5YqgIGVsc2Ug5L+u5aSNCi0g5Y2r6K+t5Y+l6aOO5qC8IOS4u+mAu+i+keS4jee8qei/mwoKIyMjIGlmIGxldCDpk77nmoTniYjmnKzopoHmsYIKLSBlZGl0aW9uIDIwMjQg5omN5pSv5oyBCi0gMjAyMSDmiqUgbGV0IGNoYWlucyDplJnor68KLSAyMDIxIOWPr+eUqOW1jOWll+WGmeazlQotIOaIlueUqCBtYXRjaCDljLnphY3lhYPnu4QKLSB3aGlsZSBsZXQg6ZO+5ZCM55CGCgojIyA2LiDor63lj6XkuI7ooajovr7lvI8KCiMjIyDlsL7ooajovr7lvI8KLSDmnIDlkI7kuIDooYzkuI3luKbliIblj7fmmK/lgLwKLSDluKbliIblj7flj5jmiJDor63lj6UKLSDlh73mlbDov5Tlm57ljZXlhYPkvJrnsbvlnovkuI3ljLnphY0KCiMjIyDlnZfnmoTlgLwKLSDlnZfmnIDlkI7kuIDooYzlhrPlrprlgLwKLSBpZiDliIbmlK/ph4zliqDliIblj7fkvJrlj5jlvIIKCiMjIyDliIblj7fkuI7pgJflj7fop4TlrpoKLSDor63lj6XnlKjliIblj7cKLSBtYXRjaCBhcm0g55So6YCX5Y+3Ci0gbGV0IGVsc2Ug5ZCO5b+F6aG75pyJ5YiG5Y+3Ci0g57uT5p6E5L2T5a2X5q6155So6YCX5Y+3CgojIyMg5o+Q5YmN6L+U5ZueCi0gcmV0dXJuIOaYr+ivreWPpSDopoHliIblj7cKLSDmnKvlsL7nlKjlsL7ooajovr7lvI8KLSDkuKTogIXliKvmt7fnnYDlhpkKCiMjIDcuIOW4uOingeaKpemUmemAn+afpQoKIyMjIOexu+Wei+exuwotIEUwMzA4IOadoeS7tuS4jeaYryBib29sCi0gRTAzMDgg5Lik5YiG5pSv57G75Z6L5LiN5ZCMCi0gRTAzMDggbWF0Y2gg5YiG5pSv57G75Z6L5LiN5ZCMCi0gRTAzMDgg5ZCEIGJyZWFrIOWAvOexu+Wei+S4jeWQjAotIEUwMzE3IGlmIOe8uuWwkSBlbHNlCgojIyMg5qih5byP57G7Ci0gRTAwMDQg5Yy56YWN5LiN56m35bC9Ci0gRTAwMDUgbGV0IOeUqOS6huWPr+WPjemps+aooeW8jwotIOitpuWRiiB1bnJlYWNoYWJsZSBwYXR0ZXJuCgojIyMg6K+t5rOV57G7Ci0gRTAyNjgg5b6q546v5aSW5L2/55SoIGJyZWFrCi0gbWF0Y2ggYXJtIOeUqOWIhuWPtwotIGxldCBjaGFpbnMg6ZyA6KaBIDIwMjQKCiMjIyDlgJ/nlKjnsbsKLSBFMDUwMiBmb3Ig5b6q546v5YaF5pS55a655ZmoCgojIyMg6K2m5ZGK57G7Ci0gdW5yZWFjaGFibGUgcGF0dGVybgotIHVudXNlZCB2YXJpYWJsZQotIHVubmVjZXNzYXJ5IHBhcmVudGhlc2VzCi0gd2hpbGUgdHJ1ZSDlu7rorq7mlLkgbG9vcAoKIyMgOC4g5YaZ5rOV5rOo5oSP5LqL6aG5CgojIyMg6YCJ5a+55bel5YW3Ci0g5p6a5Li+5LiOIFJlc3VsdCDnlKggbWF0Y2gKLSDljZXmqKHlvI/nlKggaWYgbGV0Ci0g5Y2r6K+t5Y+l55SoIGxldCBlbHNlCi0g566A5Y2V5p2h5Lu255SoIGlmCgojIyMg6YG/5YWN55qE5YaZ5rOVCi0gbWF0Y2gg6YWNIGJvb2wg5Luj5pu/IGlmCi0g5Y2V5YiG5pSv5Y205YaZ6ZW/IG1hdGNoCi0g55So5LiL5YiS57q/5b+955Wl5omA5pyJ5oOF5Ya1CgojIyMg5b6q546v5oOv55So5rOVCi0gZW51bWVyYXRlIOaLv+S4i+aghwotIGl0ZXJfbXV0IOWwseWcsOS/ruaUuQotIHRha2Ug5Y+W5YmNIE4g5LiqCi0gZmlsdGVyIOWKoCBzdW0g5YGa57Sv56evCi0g5LiN6KaB55So57Si5byV5b6q546v6aG65omLIHB1c2gKCiMjIyDmiYHlubPljJbmjqfliLbmtYEKLSDlhYjnlKggbGV0IGVsc2Ug5aSE55CG5byC5bi4Ci0g5YaN55SoIHJldHVybiDmj5DliY3pgIDlh7oKLSDkuLvpgLvovpHkuI3nvKnov5sKCiMjIyDkuIvliJLnur/nmoTlj5boiI0KLSDkuIvliJLnur/kuI3nu5HlrpoKLSDkuIvliJLnur/liqDlkI3lrZfkvJrnu5HlrprkvYbmipHliLborablkYoKLSDlj6rmmK/orqHmlbDnlKjkuIvliJLnur8KCiMjIDkuIOW4uOingeivr+WMugoKIyMjIGlmIOebuOWFswotIOS4jeiDveWDjyBDIOS4gOagt+WIpOaWremdnumbtgotIOayoeacieS4ieWFg+i/kOeul+espgotIOayoeaciSBlbHNlIOWwseayoeacieWAvAotIOS4pOWIhuaUr+exu+Wei+W/hemhu+S4gOiHtAoKIyMjIG1hdGNoIOebuOWFswotIOS4jeiDveWPquWGmeWHoOS4quWIhuaUrwotIGFybSDnlKjpgJflj7fkuI3mmK/liIblj7cKLSDkuI3lj6/ovr7lj6rmmK/orablkYoKCiMjIyDlvqrnjq/nm7jlhbMKLSBicmVhayDkuI3og73lvZMgcmV0dXJuCi0gZm9yIOmHjOS4jeiDvemaj+S+v+aUuemVv+W6pgotIHdoaWxlIGxldCDlj6/og73mrbvlvqrnjq8KCiMjIyDniYjmnKznm7jlhbMKLSBpZiBsZXQg6ZO+6ZyA6KaBIDIwMjQKLSB3aGlsZSBsZXQg6ZO+5ZCM55CGCgojIyMg5YiG5Y+355u45YWzCi0g5YiG5Y+35Yaz5a6a5YC85piv5YC86L+Y5piv5Y2V5YWDCi0g5oql6ZSZ5YOP5omT5Y2w6Zeu6aKY5YW25a6e5piv5YiG5Y+3CgojIyAxMC4g6Ieq5rWL5riF5Y2VCgojIyMg6K+t5rOV6KeE5YiZCi0gaWYgeCDog73nvJbor5HlkJcKLSBpZiDmsqEgZWxzZSDotYvlgLzmiqXku4DkuYjplJkKLSBtYXRjaCBhcm0g55So5LuA5LmI5YiG6ZqUCi0gYXJtIOWKoOWIhuWPt+S8muaAjuagtwotIGxvb3Ag55qE5YC855Sx5LuA5LmI5Yaz5a6aCi0gYnJlYWsg6IO95Zyo5b6q546v5aSW5ZCXCgojIyMg54mI5pys5beu5byCCi0gaWYgbGV0IOmTvuWcqCAyMDIxIOS4i+iDvee8luivkeWQlwotIOetieS7t+WGmeazleaYr+S7gOS5iAoKIyMjIOWunui3temAieaLqQotIG1hdGNoIOS4jiBpZiBsZXQg5LiOIGxldCBlbHNlIOWQhOeUqOS6juS7gOS5iAotIOS4ieenjSBmb3Ig5YaZ5rOV55qE5Yy65YirCi0g57Si5byV5b6q546v6YeMIHB1c2gg55qE6ZqQ5oKjCi0g5YCS5bqP5LiO5q2l6ZW/5oCO5LmI5YaZCi0g5qCH562+IGNvbnRpbnVlIOeahOWQq+S5iQotIOWIhuWPt+WmguS9leWGs+Wumui/lOWbnuWAvAo=</script>
+
+<script>
+  window.__mmFallback = function (msg) {
+    var el = document.getElementById('status');
+    el.classList.remove('hidden');
+    el.querySelector('.box').innerHTML =
+      '<b>无法加载思维导图渲染库</b><br>' + msg +
+      '<br><br>通常是因为当前环境访问不了 CDN（离线）。<br>' +
+      '替代方案：用 VS Code 的 <code>Markmap</code> 插件打开同目录下的 ' +
+      '<code>控制流-思维导图.mindmap.md</code>，' +
+      '或把它粘到 <a href="https://markmap.js.org/repl" target="_blank" rel="noreferrer">markmap.js.org/repl</a>。';
+  };
+  window.__mmDecode = function () {
+    var b64 = document.getElementById('mm-data').textContent.trim();
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  };
+</script>
+
+<!-- 依赖顺序要求：d3 → markmap-lib → markmap-view（后两者都挂在 window.markmap 上） -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18.12/dist/browser/index.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script>
+
+<script>
+(function () {
+  function boot() {
+    // 先排掉脚本自身出错的情况（此时 CDN 已通，但代码有 bug）
+    window.addEventListener('error', function (e) {
+      if (!document.getElementById('status').classList.contains('hidden')) {
+        window.__mmFallback('脚本执行出错：' + (e.message || '未知错误'));
+      }
+    });
+
+    if (typeof d3 === 'undefined') return window.__mmFallback('d3 未加载。');
+    if (typeof markmap === 'undefined' || !markmap.Transformer) return window.__mmFallback('markmap-lib 未加载。');
+    if (!markmap.Markmap) return window.__mmFallback('markmap-view 未加载。');
+
+    var markdown = window.__mmDecode();
+    var transformed = new markmap.Transformer().transform(markdown);
+    var data = transformed.root;
+
+    var INITIAL_LEVEL = 2;   // 2 = 只展开到「章节」这一层（根节点算第 1 层）
+    var mm = markmap.Markmap.create('#mindmap', {
+      autoFit: true,          // fit 在数据渲染完成之后执行
+      duration: 300,
+      spacingVertical: 9,
+      spacingHorizontal: 85,
+      paddingX: 15,
+      maxWidth: 330,
+      colorFreezeLevel: 2,
+      initialExpandLevel: INITIAL_LEVEL,
+      color: markmap.defaultColorFn
+    }, data);
+
+    document.getElementById('status').classList.add('hidden');
+
+    // 统计节点数
+    var count = 0, maxDepth = 0;
+    (function walk(n, d) {
+      count++; if (d > maxDepth) maxDepth = d;
+      (n.children || []).forEach(function (c) { walk(c, d + 1); });
+    })(data, 1);
+    document.getElementById('stat').textContent = (count - 1) + ' 个知识点 · ' + maxDepth + ' 层';
+
+    // ---- 折叠控制 ----
+    // 注意：不能用 mm.setData()，因为它会用 initialExpandLevel 重新计算并覆盖 fold
+    function setDepth(targetMin, targetMax) {
+      (function walk(n) {
+        var d = n.state ? n.state.depth : 1;
+        var hasKids = n.children && n.children.length;
+        n.payload = Object.assign({}, n.payload, {
+          fold: hasKids && d >= targetMin && d < targetMax ? 1 : 0
+        });
+        (n.children || []).forEach(walk);
+      })(data);
+      mm.renderData();
+    }
+    function fitSoon() {
+      [60, 400, 900].forEach(function (t) { setTimeout(function () { mm.fit(); }, t); });
+    }
+    var collapseBtn = document.getElementById('btn-collapse');
+    var l2Btn = document.getElementById('btn-l2');
+    var expandBtn = document.getElementById('btn-expand');
+    var fitBtn = document.getElementById('btn-fit');
+
+    collapseBtn.onclick = function () { setDepth(2, 99); fitSoon(); };  // 只留章节
+    l2Btn.onclick = function () { setDepth(3, 99); fitSoon(); };        // 展开章节下的小节
+    expandBtn.onclick = function () { setDepth(99, 99); fitSoon(); };   // 全部展开
+    fitBtn.onclick = function () { mm.fit(); };
+
+    // ---- 导出 ----
+    function download(blob, name) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+    }
+    var svg = document.getElementById('mindmap');
+    var CSS = 'svg{background:#fff;color:#101828;font-family:"Microsoft YaHei","Segoe UI",system-ui,sans-serif;}';
+
+    // 生成一张"整图、无缩放、带样式"的 SVG 副本
+    function makeExportSvg() {
+      var clone = svg.cloneNode(true);
+      var style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+      style.textContent = CSS;
+      clone.insertBefore(style, clone.firstChild);
+
+      var pad = 24, w = svg.clientWidth, h = svg.clientHeight, ox = 0, oy = 0;
+      try {
+        var b = svg.querySelector('g').getBBox();
+        if (b && b.width && b.height) {
+          w = b.width + pad * 2; h = b.height + pad * 2;
+          ox = b.x - pad; oy = b.y - pad;
+        }
+      } catch (e) { /* 退化为视口尺寸 */ }
+      clone.setAttribute('viewBox', ox + ' ' + oy + ' ' + w + ' ' + h);
+      clone.setAttribute('width', w);
+      clone.setAttribute('height', h);
+      var g = clone.querySelector('g');
+      if (g) g.removeAttribute('transform');   // 交给 viewBox 定位
+      return { svg: clone, w: w, h: h };
+    }
+
+    document.getElementById('btn-svg').onclick = function () {
+      var ex = makeExportSvg();
+      download(new Blob([new XMLSerializer().serializeToString(ex.svg)],
+        { type: 'image/svg+xml;charset=utf-8' }), 'Rust控制流-思维导图.svg');
+    };
+
+    document.getElementById('btn-png').onclick = function () {
+      var btn = this;
+      var old = btn.textContent;
+      btn.textContent = '导出中…';
+      btn.disabled = true;
+      function done() { btn.textContent = old; btn.disabled = false; }
+
+      var ex = makeExportSvg();
+      var scale = Math.min(2, Math.max(1, 3600 / ex.w));
+      // 必须用 data URL：blob URL 会污染 canvas，导致 toBlob 抛 SecurityError
+      var svgStr = new XMLSerializer().serializeToString(ex.svg);
+      var dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
+
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = Math.round(ex.w * scale);
+          canvas.height = Math.round(ex.h * scale);
+          var ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(function (blob) {
+            if (blob) download(blob, 'Rust控制流-思维导图.png');
+            else alert('PNG 导出失败，请改用「导出 SVG」。');
+            done();
+          }, 'image/png');
+        } catch (e) {
+          alert('PNG 导出失败（' + e.message + '），请改用「导出 SVG」。');
+          done();
+        }
+      };
+      img.onerror = function () {
+        alert('PNG 导出失败，请改用「导出 SVG」。');
+        done();
+      };
+      img.src = dataUrl;
+    };
+
+    // ---- H 键隐藏面板 ----
+    window.addEventListener('keydown', function (e) {
+      var t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+      if (e.key === 'h' || e.key === 'H') {
+        document.getElementById('hud').classList.toggle('hidden');
+      }
+    });
+
+    window.__mm = mm;   // 便于调试
+  }
+
+  if (document.readyState === 'complete') boot();
+  else window.addEventListener('load', boot);
+
+  // 6 秒后仍未渲染成功 → 给出降级提示（render 后 status 会被隐藏）
+  setTimeout(function () {
+    var el = document.getElementById('status');
+    if (!el.classList.contains('hidden')) {
+      window.__mmFallback('加载超时（6 秒）。');
+    }
+  }, 6000);
+})();
+</script>
+</body>
+</html>

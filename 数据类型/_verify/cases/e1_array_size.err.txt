@@ -1,0 +1,24 @@
+﻿rustc : error[E0308]: mismatched types
+At line:6 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0308]: mismatched types:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\数据类型\_verify\cases\e1_array_size.rs:3:23
+  |
+3 |     let b: [i32; 4] = a;
+  |            --------   ^ expected an array with a size of 4, found one with a size of 3
+  |            |
+  |            expected due to this
+  |
+help: consider specifying the actual array length
+  |
+3 -     let b: [i32; 4] = a;
+3 +     let b: [i32; 3] = a;
+  |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.
+

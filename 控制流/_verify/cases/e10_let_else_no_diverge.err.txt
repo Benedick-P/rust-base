@@ -1,0 +1,24 @@
+﻿rustc : error[E0005]: refutable pattern in local binding
+At line:5 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0005]: r...n local binding:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\控制流\_verify\cases\e10_let_else_no_diverge.rs:3:9
+  |
+3 |     let Some(v) = opt;
+  |         ^^^^^^^ pattern `None` not covered
+  |
+  = note: `let` bindings require an "irrefutable pattern", like a `struct` or an `enum` with only one variant
+  = note: for more information, visit https://doc.rust-lang.org/book/ch19-02-refutability.html
+  = note: the matched value is of type `Option<i32>`
+help: you might want to use `let...else` to handle the variant that isn't matched
+  |
+3 |     let Some(v) = opt else { todo!() };
+  |                       ++++++++++++++++
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0005`.
+

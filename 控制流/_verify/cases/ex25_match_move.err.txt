@@ -1,0 +1,22 @@
+﻿rustc : warning: variants `Circle` and `Point` are never constructed
+At line:5 char:3
++   rustc --edition 2021 "$dir\$n.rs" -o $o 2> $out
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: varian...ver constructed:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\控制流\_verify\cases\ex25_match_move.rs:2:5
+  |
+1 | enum Shape {
+  |      ----- variants in this enum
+2 |     Circle(f64),
+  |     ^^^^^^
+3 |     Rect { w: f64, h: f64 },
+4 |     Point,
+  |     ^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+
+

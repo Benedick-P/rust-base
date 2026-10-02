@@ -1,0 +1,22 @@
+div_by_zero	运行时 panic	panic	attempt to divide by zero
+e10_str_borrow_conflict	编译错误	E0502	rustc : error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable
+e11_string_str_mismatch	编译错误	E0308	rustc : error[E0308]: mismatched types
+e12_f64_key	编译错误	E0599	rustc : error[E0599]: the method `insert` exists for struct `HashMap<f64, &str>`, but its trait bounds were not satisfie
+e13_float_sort	编译错误	E0277	rustc : error[E0277]: the trait bound `f64: Ord` is not satisfied
+e1_array_size	编译错误	E0308	rustc : error[E0308]: mismatched types
+e2_tuple_index	编译错误	E0609	rustc : error[E0609]: no field `2` on type `({integer}, &str)`
+e3_implicit_conv	编译错误	E0308	rustc : error[E0308]: mismatched types
+e4_array_len_not_const	编译错误	E0435	rustc : error[E0435]: attempt to use a non-constant value in a constant
+e5_infer_needed	编译错误	E0282	rustc : error[E0282]: type annotations needed for `Vec<_>`
+e6_missing_field	编译错误	E0063	rustc : error[E0063]: missing field `y` in initializer of `P`
+e7_no_derive	编译错误	E0277	rustc : error[E0277]: `P` doesn't implement `Debug`
+e8_cast_to_bool	编译错误	E0054	rustc : error[E0054]: cannot cast `i32` as `bool`
+e9_string_index	编译错误	E0277	rustc : error[E0277]: the type `str` cannot be indexed by `{integer}`
+ok_hetero	正常	—	正常（有警告: rustc : warning: field `0` is never read）
+overflow_debug	编译错误	error	rustc : error: this arithmetic operation will overflow
+overflow_runtime	运行时 panic	panic	attempt to add with overflow
+panic_emoji_slice	运行时 panic	panic	end byte index 2 is not a char boundary; it is inside '🦀' (bytes 0..4 of string)
+panic_hashmap_index	运行时 panic	panic	no entry found for key
+panic_neg_overflow	运行时 panic	panic	attempt to negate with overflow
+panic_utf8_slice	运行时 panic	panic	end byte index 1 is not a char boundary; it is inside '中' (bytes 0..3 of string)
+panic_vec_index	运行时 panic	panic	index out of bounds: the len is 3 but the index is 5

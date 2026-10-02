@@ -1,0 +1,18 @@
+﻿rustc : error[E0308]: `if` and `else` have incompatible types
+At line:5 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0308]: `...ompatible types:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\控制流\_verify\cases\e1_if_type.rs:3:35
+  |
+3 |     let x = if n > 0 { 1 } else { "negative" };
+  |                        -          ^^^^^^^^^^ expected integer, found `&str`
+  |                        |
+  |                        expected because of this
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.
+

@@ -1,0 +1,12 @@
+﻿=== debug 模式运行 ===
+ovf_debug.exe : 
+At line:5 char:9
++ $out = (& "$dir\ovf_debug.exe" 2>&1 | Out-String)
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+thread 'main' (29784) panicked at D:\rust学习\数据类型\_verify\cases\overflow_runtime.rs:6:13:
+attempt to add with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+

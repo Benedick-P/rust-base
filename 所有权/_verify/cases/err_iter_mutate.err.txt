@@ -1,0 +1,21 @@
+﻿rustc : error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable
+At line:8 char:3
++   rustc --edition 2021 "$dir\$n.rs" -o "$dir\$n.exe" 2> $out
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0502]: c...ed as immutable:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\_verify\cases\err_iter_mutate.rs:4:9
+  |
+3 |     for x in &v {
+  |              --
+  |              |
+  |              immutable borrow occurs here
+  |              immutable borrow later used here
+4 |         v.push(*x); // 想边遍历边修改
+  |         ^^^^^^^^^^ mutable borrow occurs here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0502`.
+

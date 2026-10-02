@@ -1,0 +1,32 @@
+﻿rustc : error[E0596]: cannot borrow `m1` as mutable, as it is not declared as mutable
+At line:9 char:3
++   rustc --edition 2021 "$dir\$n.rs" -o "$dir\$n.exe" 2> $out
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0596]: c...ared as mutable:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\_verify\cases\err_refcell_panic.rs:6:5
+  |
+6 |     m1.push(4);
+  |     ^^ cannot borrow as mutable
+  |
+help: consider changing this to be mutable
+  |
+4 |     let mut m1 = c.borrow_mut();
+  |         +++
+
+error[E0596]: cannot borrow `m2` as mutable, as it is not declared as mutable
+ --> D:\rust学习\_verify\cases\err_refcell_panic.rs:7:5
+  |
+7 |     m2.push(5);
+  |     ^^ cannot borrow as mutable
+  |
+help: consider changing this to be mutable
+  |
+5 |     let mut m2 = c.borrow_mut();
+  |         +++
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0596`.
+

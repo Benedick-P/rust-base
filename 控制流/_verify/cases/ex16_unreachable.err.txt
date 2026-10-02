@@ -1,0 +1,19 @@
+﻿rustc : warning: unreachable pattern
+At line:5 char:3
++   rustc --edition 2021 "$dir\$n.rs" -o $o 2> $out
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: unreachable pattern:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\控制流\_verify\cases\ex16_unreachable.rs:5:9
+  |
+4 |         x => println!("任意 {x}"),
+  |         - matches any value
+5 |         5 => println!("五"),
+  |         ^ no value can reach this
+  |
+  = note: `#[warn(unreachable_patterns)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+
+

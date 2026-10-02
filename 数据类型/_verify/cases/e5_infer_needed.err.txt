@@ -1,0 +1,21 @@
+﻿rustc : error[E0282]: type annotations needed for `Vec<_>`
+At line:6 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0282]: t...ed for `Vec<_>`:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\数据类型\_verify\cases\e5_infer_needed.rs:2:9
+  |
+2 |     let v = Vec::new();
+  |         ^   ---------- type must be known at this point
+  |
+help: consider giving `v` an explicit type, where the type for type parameter `T` is specified
+  |
+2 |     let v: Vec<T> = Vec::new();
+  |          ++++++++
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0282`.
+

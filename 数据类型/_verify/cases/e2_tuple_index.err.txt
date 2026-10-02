@@ -1,0 +1,18 @@
+﻿rustc : error[E0609]: no field `2` on type `({integer}, &str)`
+At line:6 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0609]: n...nteger}, &str)`:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\数据类型\_verify\cases\e2_tuple_index.rs:3:22
+  |
+3 |     println!("{}", t.2);
+  |                      ^ unknown field
+  |
+  = note: available fields are: `0`, `1`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0609`.
+

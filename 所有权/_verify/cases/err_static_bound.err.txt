@@ -1,0 +1,26 @@
+﻿rustc : error[E0716]: temporary value dropped while borrowed
+At line:9 char:3
++   rustc --edition 2021 "$dir\$n.rs" -o "$dir\$n.exe" 2> $out
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0716]: t... while borrowed:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ --> D:\rust学习\_verify\cases\err_static_bound.rs:4:24
+  |
+4 |     println!("{}", f2(&String::from("y")));
+  |     -------------------^^^^^^^^^^^^^^^^^--
+  |     |              |   |
+  |     |              |   creates a temporary value which is freed while still in use
+  |     |              argument requires that borrow lasts for `'static`
+  |     temporary value is freed at the end of this statement
+  |
+note: requirement that the value outlives `'static` introduced here
+ --> D:\rust学习\_verify\cases\err_static_bound.rs:1:10
+  |
+1 | fn f2<T: 'static>(t: T) -> T { t }
+  |          ^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0716`.
+

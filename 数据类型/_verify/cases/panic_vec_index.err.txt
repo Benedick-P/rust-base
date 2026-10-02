@@ -1,0 +1,12 @@
+﻿=== 运行时输出 ===
+panic_vec_index.rs.exe : 
+At line:11 char:13
++     $run = (& $o 2>&1 | Out-String)
++             ~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+thread 'main' (22624) panicked at D:\rust学习\数据类型\_verify\cases\panic_vec_index.rs:3:21:
+index out of bounds: the len is 3 but the index is 5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+

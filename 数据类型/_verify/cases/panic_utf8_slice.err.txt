@@ -1,0 +1,12 @@
+﻿=== 运行时输出 ===
+panic_utf8_slice.rs.exe : 
+At line:11 char:13
++     $run = (& $o 2>&1 | Out-String)
++             ~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+thread 'main' (36960) panicked at D:\rust学习\数据类型\_verify\cases\panic_utf8_slice.rs:3:15:
+end byte index 1 is not a char boundary; it is inside '中' (bytes 0..3 of string)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+

@@ -1,0 +1,34 @@
+﻿rustc : error[E0277]: the type `str` cannot be indexed by `{integer}`
+At line:6 char:3
++   rustc --edition 2021 $_.FullName -o $o 2> $errPath
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error[E0277]: t... by `{integer}`:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   --> D:\rust学习\数据类型\_verify\cases\e9_string_index.rs:3:22
+    |
+  3 |     println!("{}", s[0]);
+    |                      ^ string indices are ranges of `usize`
+    |
+    = help: the trait `SliceIndex<str>` is not implemented for `{integer}`
+    = note: you can use `.chars().nth()` or `.bytes().nth()`
+            for more information, see chapter 8 in The Book: <https://doc.rust-lang.org/book/ch08-02-strings.html#indexi
+ng-into-strings>
+help: `usize` implements trait `SliceIndex<T>`
+   --> C:\Users\Administrator\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\sli
+ce\index.rs:179:1
+    |
+179 | const unsafe impl<T> SliceIndex<[T]> for usize {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `SliceIndex<[T]>`
+    |
+   ::: C:\Users\Administrator\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\bst
+r\traits.rs:197:1
+    |
+197 | unsafe impl SliceIndex<ByteStr> for usize {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `SliceIndex<ByteStr>`
+    = note: required for `String` to implement `Index<{integer}>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.
+

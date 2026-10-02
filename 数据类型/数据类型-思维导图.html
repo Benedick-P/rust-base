@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rust 数据类型 · 思维导图</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif; }
+  #app { position: relative; width: 100%; height: 100%; }
+  #mindmap { display: block; width: 100%; height: 100%; }
+
+  #hud {
+    position: fixed; left: 14px; top: 12px; z-index: 10;
+    display: flex; flex-direction: column; gap: 6px;
+    background: rgba(255,255,255,.92); backdrop-filter: blur(6px);
+    border: 1px solid #e3e8ef; border-radius: 10px;
+    padding: 9px 11px; width: 300px;
+    box-shadow: 0 6px 22px rgba(16,24,40,.10);
+    transition: opacity .25s, transform .25s;
+  }
+  #hud.hidden { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+  #hud .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  #hud .brand {
+    font-size: 9.5px; font-weight: 600; letter-spacing: .4px;
+    color: #1570ef; background: #eff8ff; border: 1px solid #b2ddff;
+    border-radius: 999px; padding: 1px 7px; white-space: nowrap;
+  }
+  #hud .stat { font-size: 10px; color: #98a2b3; white-space: nowrap; }
+  #hud h1 { margin: 0; font-size: 13.5px; color: #101828; }
+  #hud p { margin: 0; font-size: 10.5px; line-height: 1.55; color: #667085; }
+  #hud kbd {
+    background: #f2f4f7; border: 1px solid #d0d5dd; border-bottom-width: 2px;
+    border-radius: 3px; padding: 0 4px; font-size: 10px; color: #344054;
+    font-family: ui-monospace, Consolas, monospace;
+  }
+  #hud a { color: #1570ef; text-decoration: none; }
+  #hud a:hover { text-decoration: underline; }
+  .row { display: flex; gap: 4px; flex-wrap: wrap; }
+  .row button {
+    font: inherit; font-size: 9.5px; padding: 3px 6px; cursor: pointer; white-space: nowrap;
+    border: 1px solid #d0d5dd; background: #fff; border-radius: 5px; color: #344054;
+  }
+  .row button:hover { background: #f9fafb; border-color: #98a2b3; }
+  .row button:active { background: #f2f4f7; }
+  #hint { font-size: 10px; color: #98a2b3; }
+
+  #status {
+    position: fixed; inset: 0; display: grid; place-items: center;
+    background: #fff; z-index: 20; text-align: center; padding: 24px;
+  }
+  #status.hidden { display: none; }
+  #status .box { max-width: 620px; font-size: 13.5px; color: #475467; line-height: 1.85; }
+  #status .box b { color: #101828; }
+  #status code {
+    background: #f2f4f7; padding: 1px 5px; border-radius: 4px;
+    font-family: ui-monospace, Consolas, monospace; font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <svg id="mindmap"></svg>
+
+  <div id="hud">
+    <div class="topbar">
+      <span class="brand">RUST · DATA TYPES</span>
+      <span class="stat" id="stat">—</span>
+    </div>
+    <h1>Rust 数据类型 · 语法与注意事项</h1>
+    <p>
+      <kbd>滚轮</kbd> 缩放 · <kbd>拖拽</kbd> 平移<br>
+      <kbd>点击圆点/文字</kbd> 折叠展开 · <kbd>H</kbd> 隐藏面板
+    </p>
+    <div class="row">
+      <button id="btn-collapse">只看主干</button>
+      <button id="btn-l2">展开二级</button>
+      <button id="btn-expand">全部展开</button>
+      <button id="btn-fit">适应窗口</button>
+    </div>
+    <div class="row">
+      <button id="btn-png">导出 PNG</button>
+      <button id="btn-svg">导出 SVG</button>
+    </div>
+    <p id="hint">默认只展开到章节级；点圆点逐层展开，或用上面的按钮。<br>
+      离线打不开？用 VS Code 的 <a href="https://marketplace.visualstudio.com/items?itemName=gera2ld.markmap-vscode" target="_blank" rel="noreferrer">Markmap 插件</a>打开
+      <code>数据类型-思维导图.mindmap.md</code></p>
+  </div>
+
+  <div id="status"><div class="box">正在加载思维导图渲染库…</div></div>
+</div>
+
+<!-- 思维导图内容（base64 内嵌，避免 file:// 下的跨域读取限制） -->
+<script id="mm-data" type="application/octet-stream">IyBSdXN0IOaVsOaNruexu+WeiwoKIyMgMC4g5LiJ5p2h5oC76KeE5YiZCgojIyMg6KeE5YiZIDEg5rKh5pyJ6ZqQ5byP57G75Z6L6L2s5o2iCi0gaTMyIOS4jiBpNjQg5piv5Lik5Liq57G75Z6LCi0g5b+F6aG75pi+5byPIGFzIOaIliBGcm9tIOaIliB0cnlfZnJvbQotIOayoeaciSBDIOmCo+enjeaVsOWAvOaPkOWNhwoKIyMjIOinhOWImSAyIOWkp+Wwj+WcqOe8luivkeacn+ehruWumgotIOayoeaciei/kOihjOaXtuaJjeefpemBk+Wkp+Wwj+eahOexu+WeiwotIOWKqOaAgeWkp+Wwj+imgeeUqOW8leeUqOaIliBCb3gKCiMjIyDop4TliJkgMyDpu5jorqTnsbvlnosKLSDmlbTmlbDlrZfpnaLph4/pu5jorqQgaTMyCi0g5rWu54K55a2X6Z2i6YeP6buY6K6kIGY2NAoKIyMgMS4g5pW05pWw57G75Z6LCgojIyMg57G75Z6L5riF5Y2VCi0g5pyJ56ym5Y+3IGk4IGkxNiBpMzIgaTY0IGkxMjggaXNpemUKLSDml6DnrKblj7cgdTggdTE2IHUzMiB1NjQgdTEyOCB1c2l6ZQotIGlzaXplIOS4jiB1c2l6ZSDot5/mjIfpkojlkIzlrr0KLSDkuIvmoIfkuI7plb/luqbnlKggdXNpemUKCiMjIyDlrZfpnaLph4/lhpnms5UKLSDkuIvliJLnur/liIbpmpQgOThfMjIyCi0g5Y2B5YWt6L+b5Yi2IDB4ZmYKLSDlhavov5vliLYgMG83NwotIOS6jOi/m+WItiAwYjExMTFfMDAwMAotIOWtl+iKguWtl+mdoumHjyBiJ0EnIOaYryB1OAotIOexu+Wei+WQjue8gCAxdTY0Ci0g56eR5a2m6K6h5pWwIDFlMwoKIyMjIOWPluWAvOiMg+WbtAotIGk4IOaYryAtMTI4IOWIsCAxMjcKLSB1OCDmmK8gMCDliLAgMjU1Ci0gaTMyIOaYr+ato+i0nyAyMSDkur8KLSDnlKggaTMyIOW9k+m7mOiupOmAieaLqQoKIyMjIOi/kOeul+mZt+mYsQotIOaVtOaVsOmZpOazleWQkembtuaIquaWrQotIOi0n+S4g+mZpOS6jOW+l+i0n+S4iQotIOS9meaVsOespuWPt+i3n+iiq+mZpOaVsAotIOaVtOaVsOmZpOmbtuS8miBwYW5pYwotIOayoeacieW5gui/kOeul+espiDnlKggcG93CgojIyMg5rqi5Ye65LiJ56eN6KGM5Li6Ci0g5bi46YeP5rqi5Ye65piv57yW6K+R6ZSZ6K+vCi0gZGVidWcg6L+Q6KGM5pe2IHBhbmljIOmAgOWHuueggSAxMDEKLSByZWxlYXNlIOmdmem7mOWbnue7lQotIOaKpemUmSBhdHRlbXB0IHRvIGFkZCB3aXRoIG92ZXJmbG93CgojIyMg5rqi5Ye65aSE55CG5pa55rOVCi0gY2hlY2tlZF9hZGQg5rqi5Ye66L+U5ZueIE5vbmUKLSB3cmFwcGluZ19hZGQg5piO56Gu5Zue57uVCi0gc2F0dXJhdGluZ19hZGQg6aWx5ZKM5Yiw6L6555WMCi0gb3ZlcmZsb3dpbmdfYWRkIOi/lOWbnuWAvOS4juagh+W/lwotIOmHkemineS4juiuoeaVsOS8mOWFiOeUqCBjaGVja2VkCgojIyMg5Y+W6LSf5Lmf5Lya5rqi5Ye6Ci0gaTMyIOacgOWwj+WAvOWPlui0n+S8miBwYW5pYwotIOaKpemUmSBhdHRlbXB0IHRvIG5lZ2F0ZSB3aXRoIG92ZXJmbG93CgojIyAyLiDnsbvlnovovazmjaIKCiMjIyBhcyDmiKrmlq3lvI/ovazmjaIKLSDkuInnmb4gaTMyIOi9rCB1OCDlvpcgNDQKLSDotJ/kuIAgaTgg6L2sIHU4IOW+lyAyNTUKLSDmta7ngrnovazmlbTmlbDlkJHpm7bmiKrmlq0KLSDlj6rmnIkgdTgg6IO9IGFzIOaIkCBjaGFyCi0gYm9vbCDog70gYXMg5oiQ5pW05pWwCi0g5pW05pWw5LiN6IO9IGFzIOaIkCBib29sIOaKpSBFMDA1NAoKIyMjIOa1rueCuei9rOaVtOaVsOeahOi+ueeVjAotIOi2heWkp+WAvOmlseWSjOWIsCBpMzIg5pyA5aSn5YC8Ci0gTmFOIOi9rOaIkCAwCi0g5peg56m36aWx5ZKM5Yiw5pyA5aSn5YC8Ci0g5LiN5piv5pyq5a6a5LmJ6KGM5Li6CgojIyMgRnJvbSDkuI4gSW50bwotIOS/neivgeS4jeWksei0peeahOi9rOaNogotIOWwj+exu+Wei+WIsOWkp+exu+Wei+aJjeaciQotIOWunueOsCBGcm9tIOiHquWKqOiOt+W+lyBJbnRvCgojIyMgVHJ5RnJvbSDkuI4gVHJ5SW50bwotIOWPr+iDveWksei0peeahOi9rOaNogotIOi/lOWbniBSZXN1bHQKLSDot6jojIPlm7TovazmjaLnlKjlroMKCiMjIyDmlbDlrZfkuI7lrZfnrKbkuLIKLSBwYXJzZSDpnIDopoHnn6XpgZPnm67moIfnsbvlnosKLSB0b19zdHJpbmcg5pWw5a2X6L2s5a2X56ym5LiyCi0gZm9ybWF0IOWPr+S7peihpembtgotIGZyb21fc3RyX3JhZGl4IOaMiei/m+WItuino+aekAotIHBhcnNlIOWIq+aXoOiEkSB1bndyYXAKCiMjIDMuIOa1rueCueexu+WeiwoKIyMjIOWPquacieS4pOenjQotIGYzMiDlm5vlrZfoioLnuqbkuIPkvY3nsr7luqYKLSBmNjQg5YWr5a2X6IqC57qm5Y2B5YWt5L2N57K+5bqmCi0g6buY6K6k5pivIGY2NAotIOeyvuehruiuoeeul+S4jeimgeeUqOa1rueCuQoKIyMjIOavlOi+g+mZt+mYsQotIOmbtueCueS4gOWKoOmbtueCueS6jOS4jeetieS6jumbtueCueS4iQotIOeUqOivr+W3ruiMg+WbtOavlOi+gwotIE5hTiDkuI3nrYnkuo7oh6rlt7EKLSBOYU4g5LiO5Lu75L2V5pWw5q+U6L6D6YO95piv5YGHCi0g5rWu54K56Zmk6Zu25b6X5peg56m35LiNIHBhbmljCgojIyMg5o6S5bqP6Zeu6aKYCi0gZjY0IOayoeWunueOsCBPcmQKLSBzb3J0IOaKpSBFMDI3NwotIOWboOS4uuWtmOWcqCBOYU4KLSDmlrnmoYjkuIAgc29ydF9ieSDliqAgcGFydGlhbF9jbXAKLSDmlrnmoYjkuowgc29ydF9ieSDliqAgdG90YWxfY21wIOaOqOiNkAoKIyMjIOW4uOeUqOaWueazlQotIGZsb29yIOWQkeS4i+WPluaVtAotIGNlaWwg5ZCR5LiK5Y+W5pW0Ci0gcm91bmQg6L+c56a76Zu25Zub6IiN5LqU5YWlCi0gdHJ1bmMg5ZCR6Zu25oiq5patCi0gc3FydCDkuI4gcG93aQotIEVQU0lMT04g5pyA5bCP5beu5YC8CgojIyA0LiDluIPlsJTkuI7lrZfnrKYKCiMjIyDluIPlsJQKLSDkuIDlrZfoioIKLSB0cnVlIOS4jiBmYWxzZQotIOiDvSBhcyDmiJDmlbTmlbAKLSDmlbTmlbDkuI3og70gYXMg5oiQ5biD5bCUCgojIyMg5a2X56ymCi0g5Y2V5byV5Y+3Ci0g5rC46L+c5piv5Zub5a2X6IqCCi0gVW5pY29kZSDmoIfph4/lgLwKLSDog73lrZjkuK3mlofkuI4gZW1vamkKLSDovazkuYnkuI4gVW5pY29kZSDnoIHngrnlhpnms5UKCiMjIyDlrZfnrKbnmoTmlrnms5UKLSBpc19hbHBoYWJldGljCi0gaXNfYWxwaGFudW1lcmljCi0gdG9fZGlnaXQg6L+U5ZueIE9wdGlvbgotIHRvX2FzY2lpX3VwcGVyY2FzZSDpnZ4gQVNDSUkg5Y6f5qC36L+U5ZueCi0gY2hhciBhcyB1OCDkvJrmiKrmlq3opoHlsI/lv4MKLSDopoHnoIHngrnnlKggYXMgdTMyCgojIyA1LiDlrZfnrKbkuLIKCiMjIyDkuKTnp43nsbvlnovliIblt6UKLSBTdHJpbmcg5oul5pyJ5aCG5YaF5a2Y5Y+v5aKe6ZW/Ci0gc3RyIOaYr+WAn+eUqOWPquivuwotIOWPguaVsOS8mOWFiOeUqCBzdHIKLSDov5Tlm57lgLzkvJjlhYjnlKggU3RyaW5nCi0g5LqM6ICF5LiN6IO955u05o6l5LqS55u46LWL5YC8CgojIyMg5Yib5bu65pa55byPCi0gU3RyaW5nIG5ldyDkuI4gZnJvbQotIHRvX3N0cmluZyDkuI4gdG9fb3duZWQKLSBmb3JtYXQg5a6PCi0gd2l0aF9jYXBhY2l0eSDpooTnlZkKCiMjIyDplb/luqbpmbfpmLEKLSBsZW4g5piv5a2X6IqC5pWwCi0gY2hhcnMgY291bnQg5piv5a2X56ym5pWwCi0g5Lit5paH5q+P5Liq5a2X5LiJ5a2X6IqCCi0gaXNfY2hhcl9ib3VuZGFyeSDliKTmlq3ovrnnlYwKCiMjIyDkuI3og73kuIvmoIforr/pl64KLSBzIOmbtiDmiqUgRTAyNzcKLSDlm6DkuLogVVRGLTgg5Y+Y6ZW/Ci0g5pu/5LujIGNoYXJzIG50aAotIOabv+S7oyBhc19ieXRlcwotIOabv+S7oyBnZXQg6L+U5ZueIE9wdGlvbgoKIyMjIOWIh+eJh+W/hemhu+iQveWcqOWtl+espui+ueeVjAotIOWIh+WcqOS4remXtOS8miBwYW5pYwotIOaKpemUmSBub3QgYSBjaGFyIGJvdW5kYXJ5Ci0gZW1vamkg5Y+v6IO95Y2g5Zub5a2X6IqCCi0g5a6J5YWo5YaZ5rOV55SoIGdldAotIOaIlueUqCBjaGFycyB0YWtlCgojIyMg5ou85o6l5LiO5bi455So5pON5L2cCi0gcHVzaCDliqDlrZfnrKYKLSBwdXNoX3N0ciDliqDlrZfnrKbkuLIKLSDliqDlj7fkvJrnp7vliqjlt6bovrkKLSBmb3JtYXQg5o6o6I2QCi0gY29udGFpbnMg5LiOIGZpbmQKLSBmaW5kIOi/lOWbnuWtl+iKguS4i+aghwotIHJlcGxhY2Ugc3BsaXQgdHJpbQotIOWOn+Wni+Wtl+espuS4suS4jeWkhOeQhui9rOS5iQotIOWtl+iKguS4suWJjee8gCBiCgojIyA2LiDlhYPnu4TkuI7mlbDnu4QKCiMjIyDlhYPnu4QKLSDlrprplb/lj6/mt7flkIjnsbvlnosKLSDngrnpm7borr/pl64KLSDop6PmnoTkuI7lv73nlaUKLSDljZXlhYPnsbvlnovmmK/nqbrlhYPnu4QKLSDljZXlhYPntKDopoHliqDpgJflj7cKLSDlj6/ku6XlrZflhbjluo/mr5TovoMKLSDotoXov4flm5vkuKrlgLzlu7rorq7nlKjnu5PmnoTkvZMKCiMjIyDmlbDnu4QKLSDnsbvlnovmmK/mlrnmi6zlj7cgVCDliIblj7cgTgotIOmVv+W6puaYr+e8luivkeacn+W4uOmHjwotIOagiOS4iuWIhumFjQotIOmHjeWkjeWAvOivreazlQotIGxlbiDmmK/nvJbor5HmnJ/luLjph48KLSDotornlYwgcGFuaWMg55SoIGdldCDlronlhagKLSDliIfniYfkuI7lj6/lj5jmlbDnu4QKLSDlhYPntKAgQ29weSDml7bmlbDnu4TkuZ/mmK8gQ29weQoKIyMjIOaVsOe7hOeahOS4pOS4quaKpemUmQotIOmVv+W6pueUqOWPmOmHj+aKpSBFMDQzNQotIOmVv+W6puS4jeWQjOaYr+S4pOS4quexu+Wei+aKpSBFMDMwOAoKIyMgNy4gVmVjIOWKqOaAgeaVsOe7hAoKIyMjIOWIm+W7ugotIFZlYyBuZXcg6KaB5qCH57G75Z6LCi0gdmVjIOWujwotIOmHjeWkjeWAvOivreazlQotIGNvbGxlY3Qg5LuO6L+t5Luj5ZmoCi0gd2l0aF9jYXBhY2l0eSDpooTnlZkKCiMjIyDlop7liKDmlLkKLSBwdXNoIOS4jiBwb3Ag5bC+6YOoCi0gaW5zZXJ0IOS4jiByZW1vdmUg5oyH5a6a5L2N572u5pivIE8gbgotIGV4dGVuZCDov73liqDlpJrkuKoKLSByZXRhaW4g5bCx5Zyw6L+H5rukCi0gY2xlYXIg5riF56m6Ci0g5LiL5qCH6LWL5YC8CgojIyMg6K6/6ZeuCi0g5LiL5qCH6LaK55WMIHBhbmljCi0gZ2V0IOi/lOWbniBPcHRpb24g5a6J5YWoCi0gZmlyc3Qg5LiOIGxhc3QKCiMjIyDmn6Xor6LkuI7lj5jmjaIKLSBjb250YWlucwotIHBvc2l0aW9uCi0gc3VtIOS4jiBtYXgKLSBsZW4g5LiOIGlzX2VtcHR5CgojIyMg6KOF5LiN5ZCM57G75Z6LCi0g55So5p6a5Li+5o6o6I2QCi0g5oiW55SoIEJveCBkeW4gVHJhaXQKCiMjIyBWZWNEZXF1ZQotIOS4pOerr+mrmOaViOWinuWIoAotIHB1c2hfZnJvbnQg5LiOIHB1c2hfYmFjawoKIyMgOC4g6ZuG5ZCI57G75Z6LCgojIyMgSGFzaE1hcAotIOmUruW/hemhu+WunueOsCBIYXNoIOS4jiBFcQotIGdldCDlronlhagg5LiL5qCH5LyaIHBhbmljCi0gZW50cnkgQVBJIOS4jeWtmOWcqOaJjeaPkuWFpQotIGVudHJ5IOWKoCBvcl9pbnNlcnQg6K6h5pWw5oOv55So5rOVCi0g6YGN5Y6G6aG65bqP5LiN5L+d6K+BCi0gcmVtb3ZlIOi/lOWbniBPcHRpb24KCiMjIyBIYXNoU2V0Ci0g5Y676YeN5LiO5oiQ5ZGY5Yik5patCi0g5LuO6L+t5Luj5ZmoIGNvbGxlY3QKCiMjIyBCVHJlZU1hcCDkuI4gQlRyZWVTZXQKLSDmjIkga2V5IOacieW6jwotIGtleXMg6aG65bqP56iz5a6aCi0gcmFuZ2Ug6IyD5Zu05p+l6K+iCgojIyMg6YCJ5oup5bu66K6uCi0g5Y+q5p+l5om+55SoIEhhc2hNYXAKLSDopoHmnInluo/nlKggQlRyZWVNYXAKLSDopoHnqLPlrprpobrluo/ovpPlh7rlv4XpobvmjpLluo8KCiMjIDkuIOe7k+aehOS9kwoKIyMjIOS4ieenjeW9ouaAgQotIOWFt+WQjee7k+aehOS9kwotIOWFg+e7hOe7k+aehOS9k+eUqOeCuembtuiuv+mXrgotIOWNleWFg+e7k+aehOS9k+WBmuagh+iusAoKIyMjIOWIneWni+WMlgotIOWtl+auteeugOWGmQotIOe7k+aehOS9k+abtOaWsOivreazlQotIOWtl+auteW/hemhu+WGmeWFqOWQpuWImSBFMDA2MwotIOimgem7mOiupOWAvOWwseWunueOsOaIlua0vueUnyBEZWZhdWx0CgojIyMg5rS+55Sf5a6PCi0gRGVidWcg5pSv5oyB5omT5Y2wCi0gQ2xvbmUg5LiOIENvcHkKLSBQYXJ0aWFsRXEg5LiOIEVxCi0gSGFzaCDmiY3og73lvZPplK4KLSBEZWZhdWx0IOm7mOiupOWAvAotIFBhcnRpYWxPcmQg5LiOIE9yZCDmiY3og73mjpLluo8KLSBDb3B5IOimgeaxguaJgOacieWtl+autSBDb3B5Ci0g5ZCrIGY2NCDkuI3og70gRXEg5LiOIEhhc2gKCiMjIyDmlrnms5XkuI7lhbPogZTlh73mlbAKLSBuZXcg5pegIHNlbGYKLSBzZWxmIOWPquivu+aWueazlQotIG11dCBzZWxmIOS/ruaUueaWueazlQotIHNlbGYg5raI6LS55pa55rOVCi0gU2VsZiDmjIflvZPliY3nsbvlnosKCiMjIyDnp4HmnInmgKcKLSDlrZfmrrXpu5jorqTnp4HmnIkKLSDopoHmmrTpnLLliqAgcHViCgojIyAxMC4g5p6a5Li+CgojIyMg5LiJ56eN5Y+Y5L2TCi0g5Y2V5YWD5Y+Y5L2TCi0g57uT5p6E5L2T5Y+Y5L2TCi0g5YWD57uE5Y+Y5L2TCgojIyMg6YWN5ZCIIG1hdGNoIOino+aehAotIOavj+S4quWPmOS9k+WIhuWIq+WkhOeQhgotIOe8luivkeWZqOW8uuWItuept+WwvQoKIyMjIOmAkuW9kuexu+WeiwotIOW/hemhu+eUqCBCb3gKLSDlkKbliJnmiqUgRTAwNzIg5peg6ZmQ5aSn5bCPCgojIyMg5p6a5Li+55qE55So6YCUCi0g5pu/5LujIG51bGwg55SoIE9wdGlvbgotIOabv+S7o+eKtuaAgeWKoOS4gOWghuWPr+mAieWtl+autQotIOW8guaehOmbhuWQiOeUqOaemuS4vgoKIyMgMTEuIOexu+Wei+aOqOaWreS4juagh+azqAoKIyMjIOm7mOiupOS4juaOqOaWrQotIOWtl+mdoumHj+m7mOiupCBpMzIg5LiOIGY2NAotIOS4iuS4i+aWh+WGs+Wumuexu+WeiwotIOWQjue8gOS4jiB0dXJib2Zpc2gKCiMjIyDlv4XpobvmoIfms6jnmoTlnLrmma8KLSBwYXJzZSDnmoTnm67moIfnsbvlnosKLSDnqbrpm4blkIgKLSBjb2xsZWN0IOeahOebruagh+exu+WeiwotIOa1rueCueaWueazleatp+S5ieaKpSBFMDY4OQotIOaOqOaWreWksei0peaKpSBFMDI4MgoKIyMgMTIuIOW4uOingeaKpemUmemAn+afpQoKIyMjIOexu+Wei+S4jeWMuemFjQotIEUwMzA4IOaVsOWAvOexu+Wei+S4jeWQjAotIEUwMzA4IFN0cmluZyDkuI4gc3RyCi0gRTAzMDgg5pWw57uE6ZW/5bqm5LiN5ZCMCi0gRTAwNTQg5pW05pWw6L2sIGJvb2wKCiMjIyDmjqjmlq3kuI7luLjph48KLSBFMDI4MiDpnIDopoHnsbvlnovmoIfms6gKLSBFMDQzNSDmlbDnu4Tplb/luqbkuI3mmK/luLjph48KLSBFMDYwOSDlhYPnu4TkuIvmoIfotornlYwKLSBFMDA2MyDnu5PmnoTkvZPlrZfmrrXmsqHlhpnlhagKCiMjIyB0cmFpdCDnvLrlpLEKLSBFMDI3NyDmsqHmtL7nlJ8gRGVidWcKLSBFMDI3NyDmsqHmtL7nlJ8gUGFydGlhbEVxCi0gRTAyNzcgZjY0IOayoeaciSBPcmQKLSBFMDI3NyBzdHIg5LiN6IO95LiL5qCHCgojIyMg6YCS5b2S57G75Z6LCi0gRTAwNzIg5peg6ZmQ5aSn5bCP6KaB55SoIEJveAoKIyMjIOi/kOihjOaXtiBwYW5pYwotIOaVtOaVsOa6ouWHuiBkZWJ1ZwotIOaVtOaVsOmZpOmbtgotIOWPlui0n+a6ouWHugotIOS4i+agh+i2iueVjAotIOWTiOW4jOihqOmUruS4jeWtmOWcqAotIOWtl+espuS4suWIh+WcqOWtl+espuS4remXtAoKIyMgMTMuIOWGmeazleazqOaEj+S6i+mhuQoKIyMjIOmAieWvueexu+WeiwotIOS4gOiIrOaVtOaVsCBpMzIKLSDkuIvmoIfplb/luqYgdXNpemUKLSDlrZfoioLmlbDmja4gdTgg5LiOIFZlYyB1OAotIOa1rueCuSBmNjQKLSDph5Hpop3nlKjmlbTmlbDmiJYgRGVjaW1hbAotIOWPr+iDveayoeWAvOeUqCBPcHRpb24KLSDlj6/og73lpLHotKXnlKggUmVzdWx0Ci0g5aSa6YCJ5LiA55SoIGVudW0KCiMjIyDlh73mlbDnrb7lkI3lu7rorq4KLSDlj4LmlbDkvJjlhYjlgJ/nlKggc3RyIOS4juWIh+eJhwotIOmcgOimgeaOpeeuoeaJjeaMieWAvOaUtgotIOi/lOWbnuS8mOWFiOaLpeacieWeiwoKIyMjIOe7huiKgua4heWNlQotIOa1rueCueWIq+eUqOetieWPtyDnlKjor6/lt64KLSDkuIvmoIfkvJjlhYggZ2V0Ci0g5oOz5riF5a2X6IqC6L+Y5piv5a2X56ymCi0g6ZuG5ZCI6aKE5YiG6YWN5a656YePCi0g5LiOIEMg5Lqk5LqS6KaBIHJlcHIgQwotIOaVtOaVsOmZpOazleWIq+aMh+acm+Wwj+aVsAotIOWtl+espuS4juWtl+iKguWIq+a3twoKIyMjIOmBv+WFjeeahOWGmeazlQotIFZlYyDkuI3pooTliIbphY3lj43lpI3mianlrrkKLSBIYXNoTWFwIOW9k+acieW6j+WuueWZqAotIFN0cmluZyDlrZjkuozov5vliLYKLSBmNjQg5b2T6ZSuCi0g5YWD57uE6L+U5Zue5aSq5aSa5YC8Ci0g5peg6ISRIHVud3JhcCDnlKjmiLfovpPlhaUKCiMjIDE0LiDluLjop4Hor6/ljLoKCiMjIyDmlbDlgLwKLSDkuI3kvJrpmpDlvI/mj5DljYfnsbvlnosKLSDmlbTmlbDmuqLlh7rkuI3mmK/oh6rliqjlj5jlpKcKLSDmta7ngrnpmaTpm7bkuI3ltKkg5pW05pWw5omN5bSpCi0g5LiA6Zmk5LqM5LiN5piv6Zu254K55LqUCi0g6LSf5LiD6Zmk5LqM5LiN5piv6LSf5ZubCgojIyMg5a2X56ym5LiO5a2X56ym5LiyCi0gY2hhciDkuI3mmK/kuIDlrZfoioLmmK/lm5vlrZfoioIKLSBsZW4g5piv5a2X6IqC5pWw5LiN5piv5a2X56ym5pWwCi0g5a2X56ym5Liy5LiN6IO95LiL5qCHCi0g5YiH54mH5b+F6aG76JC95Zyo5a2X56ym6L6555WMCi0g5rWu54K55LiN6IO955u05o6lIHNvcnQKCiMjIyDlrrnlmagKLSDmlbDnu4Tplb/luqblv4XpobvmmK/luLjph48KLSDplb/luqbkuI3lkIzmmK/kuI3lkIznsbvlnosKLSDnu5PmnoTkvZPkuI3lhpnlhajkvJrmiqXplJkKLSBWZWMg5LiN6IO96KOF5LiN5ZCM57G75Z6LCi0g6YCS5b2S57G75Z6L6KaBIEJveAotIEhhc2hNYXAg6aG65bqP5LiN56iz5a6aCgojIyMg6L2s5o2iCi0gYXMg5LiN5a6J5YWo5Lya5oiq5patCi0g5rWu54K5562J5Y+35q+U6L6D5LiN5Y+v6Z2gCgojIyAxNS4g6Ieq5rWL5riF5Y2VCgojIyMg5qCH6YePCi0g5a2X6Z2i6YeP6buY6K6k57G75Z6L5piv5LuA5LmICi0g6LSf5LiD6Zmk5LqM5LiO5Y+W5L2Z5piv5aSa5bCRCi0g5rqi5Ye65Zyo5LiJ56eN5oOF5Ya15LiL55qE6KGM5Li6Ci0g5LiJ56eN5rqi5Ye65aSE55CG5pa55rOV5Yy65YirCi0gY2hhciDlh6DlrZfoioIgYXMgdTgg5Lya5oCO5qC3CgojIyMg6L2s5o2iCi0g5LiJ55m+IGkzMiDovawgdTgg5piv5aSa5bCRCi0g5rWu54K56L2s5pW05pWw55qE5oiq5pat5LiO6aWx5ZKMCi0gTmFOIOi9rOaVtOaVsOaYr+WkmuWwkQotIEZyb20g5LiOIFRyeUZyb20g55So5Zyo5ZOqCgojIyMg5rWu54K5Ci0g6Zu254K55LiA5Yqg6Zu254K55LqM562J5LqO6Zu254K55LiJ5ZCXCi0g5Li65LuA5LmIIGY2NCDkuI3og73nm7TmjqUgc29ydAotIOa1rueCueS4juaVtOaVsOmZpOmbtueahOWMuuWIqwoKIyMjIOWtl+espuS4sgotIOS4reaWh+eahCBsZW4g5LiOIGNoYXJzIGNvdW50Ci0g5Li65LuA5LmIIHMg6Zu2IOe8luivkeS4jei/hwotIOWIh+WcqOWtl+espuS4remXtOS8muaAjuagtwotIFN0cmluZyDkuI4gc3RyIOaAjuS5iOmAiQoKIyMjIOWkjeWQiOS4jumbhuWQiAotIOWNleWFg+e0oOWFg+e7hOeahOWGmeazlQotIOaVsOe7hOmVv+W6puiDveWQpueUqOWPmOmHjwotIFZlYyBuZXcg5L2V5pe25b+F6aG75qCH57G75Z6LCi0gVmVjIOaAjuS5iOijheS4jeWQjOexu+WeiwotIEhhc2hNYXAg6aG65bqP56iz5a6a5ZCXCi0g5LiL5qCH5LiOIGdldCDnmoTljLrliKsKCiMjIyDoh6rlrprkuYnnsbvlnosKLSDnu5PmnoTkvZPkuInnp43lvaLmgIEKLSDluLjnlKjmtL7nlJ/mnInlk6rkupsKLSBDb3B5IOS4jiBDbG9uZSDljLrliKsKLSDpgJLlvZLmnprkuL7kuLrku4DkuYjopoEgQm94Ci0gc3RydWN0IOS4jiBlbnVtIOaAjuS5iOmAiQo=</script>
+
+<script>
+  window.__mmFallback = function (msg) {
+    var el = document.getElementById('status');
+    el.classList.remove('hidden');
+    el.querySelector('.box').innerHTML =
+      '<b>无法加载思维导图渲染库</b><br>' + msg +
+      '<br><br>通常是因为当前环境访问不了 CDN（离线）。<br>' +
+      '替代方案：用 VS Code 的 <code>Markmap</code> 插件打开同目录下的 ' +
+      '<code>数据类型-思维导图.mindmap.md</code>，' +
+      '或把它粘到 <a href="https://markmap.js.org/repl" target="_blank" rel="noreferrer">markmap.js.org/repl</a>。';
+  };
+  window.__mmDecode = function () {
+    var b64 = document.getElementById('mm-data').textContent.trim();
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  };
+</script>
+
+<!-- 依赖顺序要求：d3 → markmap-lib → markmap-view（后两者都挂在 window.markmap 上） -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18.12/dist/browser/index.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script>
+
+<script>
+(function () {
+  function boot() {
+    // 先排掉脚本自身出错的情况（此时 CDN 已通，但代码有 bug）
+    window.addEventListener('error', function (e) {
+      if (!document.getElementById('status').classList.contains('hidden')) {
+        window.__mmFallback('脚本执行出错：' + (e.message || '未知错误'));
+      }
+    });
+
+    if (typeof d3 === 'undefined') return window.__mmFallback('d3 未加载。');
+    if (typeof markmap === 'undefined' || !markmap.Transformer) return window.__mmFallback('markmap-lib 未加载。');
+    if (!markmap.Markmap) return window.__mmFallback('markmap-view 未加载。');
+
+    var markdown = window.__mmDecode();
+    var transformed = new markmap.Transformer().transform(markdown);
+    var data = transformed.root;
+
+    var INITIAL_LEVEL = 2;   // 2 = 只展开到「章节」这一层（根节点算第 1 层）
+    var mm = markmap.Markmap.create('#mindmap', {
+      autoFit: true,          // fit 在数据渲染完成之后执行
+      duration: 300,
+      spacingVertical: 9,
+      spacingHorizontal: 85,
+      paddingX: 15,
+      maxWidth: 330,
+      colorFreezeLevel: 2,
+      initialExpandLevel: INITIAL_LEVEL,
+      color: markmap.defaultColorFn
+    }, data);
+
+    document.getElementById('status').classList.add('hidden');
+
+    // 统计节点数
+    var count = 0, maxDepth = 0;
+    (function walk(n, d) {
+      count++; if (d > maxDepth) maxDepth = d;
+      (n.children || []).forEach(function (c) { walk(c, d + 1); });
+    })(data, 1);
+    document.getElementById('stat').textContent = (count - 1) + ' 个知识点 · ' + maxDepth + ' 层';
+
+    // ---- 折叠控制 ----
+    // 注意：不能用 mm.setData()，因为它会用 initialExpandLevel 重新计算并覆盖 fold
+    function setDepth(targetMin, targetMax) {
+      (function walk(n) {
+        var d = n.state ? n.state.depth : 1;
+        var hasKids = n.children && n.children.length;
+        n.payload = Object.assign({}, n.payload, {
+          fold: hasKids && d >= targetMin && d < targetMax ? 1 : 0
+        });
+        (n.children || []).forEach(walk);
+      })(data);
+      mm.renderData();
+    }
+    function fitSoon() {
+      [60, 400, 900].forEach(function (t) { setTimeout(function () { mm.fit(); }, t); });
+    }
+    var collapseBtn = document.getElementById('btn-collapse');
+    var l2Btn = document.getElementById('btn-l2');
+    var expandBtn = document.getElementById('btn-expand');
+    var fitBtn = document.getElementById('btn-fit');
+
+    collapseBtn.onclick = function () { setDepth(2, 99); fitSoon(); };  // 只留章节
+    l2Btn.onclick = function () { setDepth(3, 99); fitSoon(); };        // 展开章节下的小节
+    expandBtn.onclick = function () { setDepth(99, 99); fitSoon(); };   // 全部展开
+    fitBtn.onclick = function () { mm.fit(); };
+
+    // ---- 导出 ----
+    function download(blob, name) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+    }
+    var svg = document.getElementById('mindmap');
+    var CSS = 'svg{background:#fff;color:#101828;font-family:"Microsoft YaHei","Segoe UI",system-ui,sans-serif;}';
+
+    // 生成一张"整图、无缩放、带样式"的 SVG 副本
+    function makeExportSvg() {
+      var clone = svg.cloneNode(true);
+      var style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+      style.textContent = CSS;
+      clone.insertBefore(style, clone.firstChild);
+
+      var pad = 24, w = svg.clientWidth, h = svg.clientHeight, ox = 0, oy = 0;
+      try {
+        var b = svg.querySelector('g').getBBox();
+        if (b && b.width && b.height) {
+          w = b.width + pad * 2; h = b.height + pad * 2;
+          ox = b.x - pad; oy = b.y - pad;
+        }
+      } catch (e) { /* 退化为视口尺寸 */ }
+      clone.setAttribute('viewBox', ox + ' ' + oy + ' ' + w + ' ' + h);
+      clone.setAttribute('width', w);
+      clone.setAttribute('height', h);
+      var g = clone.querySelector('g');
+      if (g) g.removeAttribute('transform');   // 交给 viewBox 定位
+      return { svg: clone, w: w, h: h };
+    }
+
+    document.getElementById('btn-svg').onclick = function () {
+      var ex = makeExportSvg();
+      download(new Blob([new XMLSerializer().serializeToString(ex.svg)],
+        { type: 'image/svg+xml;charset=utf-8' }), 'Rust数据类型-思维导图.svg');
+    };
+
+    document.getElementById('btn-png').onclick = function () {
+      var btn = this;
+      var old = btn.textContent;
+      btn.textContent = '导出中…';
+      btn.disabled = true;
+      function done() { btn.textContent = old; btn.disabled = false; }
+
+      var ex = makeExportSvg();
+      var scale = Math.min(2, Math.max(1, 3600 / ex.w));
+      // 必须用 data URL：blob URL 会污染 canvas，导致 toBlob 抛 SecurityError
+      var svgStr = new XMLSerializer().serializeToString(ex.svg);
+      var dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
+
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = Math.round(ex.w * scale);
+          canvas.height = Math.round(ex.h * scale);
+          var ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(function (blob) {
+            if (blob) download(blob, 'Rust数据类型-思维导图.png');
+            else alert('PNG 导出失败，请改用「导出 SVG」。');
+            done();
+          }, 'image/png');
+        } catch (e) {
+          alert('PNG 导出失败（' + e.message + '），请改用「导出 SVG」。');
+          done();
+        }
+      };
+      img.onerror = function () {
+        alert('PNG 导出失败，请改用「导出 SVG」。');
+        done();
+      };
+      img.src = dataUrl;
+    };
+
+    // ---- H 键隐藏面板 ----
+    window.addEventListener('keydown', function (e) {
+      var t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+      if (e.key === 'h' || e.key === 'H') {
+        document.getElementById('hud').classList.toggle('hidden');
+      }
+    });
+
+    window.__mm = mm;   // 便于调试
+  }
+
+  if (document.readyState === 'complete') boot();
+  else window.addEventListener('load', boot);
+
+  // 6 秒后仍未渲染成功 → 给出降级提示（render 后 status 会被隐藏）
+  setTimeout(function () {
+    var el = document.getElementById('status');
+    if (!el.classList.contains('hidden')) {
+      window.__mmFallback('加载超时（6 秒）。');
+    }
+  }, 6000);
+})();
+</script>
+</body>
+</html>

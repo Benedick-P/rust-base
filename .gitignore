@@ -1,0 +1,36 @@
+# ---- Rust 构建产物 ----
+# cargo 的构建缓存（几十 MB，可由 cargo test 重新生成）
+target/
+**/target/
+
+# ---- Node 依赖（markmap 等本地校验库，几百 MB）----
+# 只忽略依赖目录，保留记录依赖的 package.json（便于重装：npm install）
+node_modules/
+**/node_modules/
+
+# ---- 编译出来的可执行文件与调试符号 ----
+# 注意：只忽略 _verify/cases 里为了验证报错而临时编译出的产物，
+#      不要忽略真正的源码 .rs 文件。
+*.exe
+*.pdb
+*.rlib
+*.rmeta
+**/cases/*.exe
+**/cases/*.pdb
+
+# ---- 浏览器临时数据（无头 Chrome 校验用的 profile）----
+chrome-prof*/
+chrome-profile*/
+**/chrome-prof*/
+**/chrome-profile*/
+
+# ---- git 自身 ----
+.gitignore.bak
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
