@@ -1,0 +1,10 @@
+e0365_private_reexport	E0365	src\main.rs:11:9: error[E0365]: `inner` is only public within the crate, and cannot be re-exported outside: re-export of crate public `inner`
+e0428_duplicate_mod	E0428	src\main.rs:9:1: error[E0428]: the name `dup` is defined multiple times: `dup` redefined here
+e0432_unresolved	E0432	src\lib.rs:1:12: error[E0432]: unresolved import `crate::nope`: could not find `nope` in the crate root
+e0433_undeclared_mod	E0433	src\main.rs:6:13: error[E0433]: cannot find module or crate `foo` in this scope: use of unresolved module or unlinked crate `foo`
+e0583_missing_file	E0583	src\lib.rs:1:1: error[E0583]: file not found for module `missing_mod`
+e0603_private	E0603	src\main.rs:13:12: error[E0603]: function `hidden` is private: private function
+e0624_private_method	E0624	src\main.rs:24:7: error[E0624]: method `secret` is private: private method
+e0624_pub_crate_cross_crate	E0624	app\src\main.rs:6:7: error[E0624]: method `bump` is private: private method
+e0659_glob_ambiguous	E0659	src\main.rs:21:5: error[E0659]: `f` is ambiguous: ambiguous name
+e0761_ambiguous_module_file	E0761	src\lib.rs:13:1: error[E0761]: file for module `thing` found at both "src\thing.rs" and "src\thing\mod.rs"

@@ -1,0 +1,295 @@
+%% Rust 包与模块 · 思维导图（Mermaid mindmap）
+%%
+%% 用法：把本文件内容粘到 https://mermaid.live 即可看图；
+%%       Obsidian / Typora / GitHub 的 mermaid 代码块也支持 mindmap 图类型。
+%% 说明：为保证各版本 Mermaid 都能解析，节点文本避开了括号 / 冒号 / 引号等特殊字符。
+%%       完整可交互版请用同目录的「包与模块-思维导图.html」。
+
+mindmap
+  root))Rust 包与模块((
+    0 三层概念
+      包 Package
+        一个 Cargo.toml 就是一个包
+        是 Cargo 的打包单位
+        可包含多个 crate
+      crate
+        是编译单位
+        库 crate 最多一个
+        二进制 crate 可多个
+        每个测试文件也是独立 crate
+      模块 Module
+        crate 内部的命名空间
+        也是可见性边界
+        从 crate 根开始成树
+      三者关系一句话
+        包是打包单位
+        crate 是编译单位
+        模块是命名空间与可见性边界
+    1 Cargo 清单
+      基本字段
+        name 决定库 crate 名
+        version 与 edition
+        rust-version 最低版本
+        default-run 指定默认二进制
+      依赖写法
+        普通依赖来自 crates 点 io
+        path 依赖本地路径
+        git 依赖仓库
+        dev-dependencies 仅测试
+        build-dependencies 构建脚本
+      目标声明
+        lib 段声明库 crate
+        bin 段声明二进制
+        crate-type 可指定产物类型
+      features 开关
+        default 默认启用集合
+        自定义 feature
+        feature 可依赖其他 feature
+      两个实战坑
+        误认为在工作空间里
+        修法是加空 workspace 段
+        多 bin 时 cargo run 不知道跑哪个
+        修法是 default-run 或 bin 参数
+    2 crate 类型与产物
+      库 crate
+        源文件是 src 下的 lib.rs
+        名字等于包名
+        产物是 rlib
+        没有 main 函数
+      二进制 crate
+        src 下的 main.rs 名字是包名
+        src 下 bin 目录每个文件一个 crate
+        每个都要 fn main
+      测试与示例 crate
+        tests 下每个文件独立 crate
+        examples 下是示例可执行
+        benches 下是基准测试
+      crate 根
+        每个 crate 的顶层文件
+        模块树从 crate 根开始
+        crate 前缀指向当前 crate 根
+      关键区分
+        二进制之间不能互相 use
+        共享代码要放进库 crate
+        同包二进制通过包名用库
+    3 模块声明与文件
+      mod 是声明不是导入
+        mod foo 让编译器读文件
+        use 只是少写前缀
+        两者完全不同
+      文件对应规则
+        lib.rs 是 crate 根
+        mod geometry 对应 geometry.rs
+        或对应 geometry 目录下的 mod.rs
+        子模块写在子目录里
+      两种等价写法
+        现代写法 foo.rs 加 foo 目录
+        老写法 foo 目录加 mod.rs
+        两都可混用但项目内要一致
+      三个实测结论
+        没写 mod 却用路径 报 E0433
+        写了 mod 但文件不存在 报 E0583
+        文件存在但没写 mod 不报错只是被忽略
+      文件冲突
+        同一模块两个候选文件
+        报 E0761
+        修法是删掉一个
+    4 路径与访问
+      四种前缀
+        crate 前缀 当前 crate 根
+        super 前缀 上一层模块
+        self 前缀 当前模块
+        外部 crate 名 引用别的 crate
+      路径建议
+        超过两层别用 super super
+        改用 crate 绝对路径更清晰
+      内联模块
+        mod 名字 加大括号
+        适合小工具
+        适合测试模块
+    5 use 导入与再导出
+      use 的形态
+        单个导入
+        as 起别名
+        大括号一次多个
+        星号通配慎用
+      最后一段才是要引进的项
+        要引进函数就写全到函数名
+        否则引进的是模块
+        调用时报 E0423
+      pub use 再导出
+        让外部少写一层路径
+        facade 模式
+        trait 必须一起导出
+        否则方法调不了报 E0599
+      prelude 惯用法
+        把所有常用项收进 prelude
+        调用方一行星号导入
+        标准库也这么做
+      pub use 私有模块
+        报 E0365
+        修法是把模块改成 pub
+        直接 pub use 不加 as 会先撞 E0255
+    6 可见性四档
+      默认私有
+        当前模块及其后代可见
+        子模块能看父模块私有项
+        反过来不行
+      pub
+        任何地方可见
+        受所在模块本身可见性限制
+        每一层都要 pub 路径才通
+      pub 括号 crate
+        整个 crate 可见
+        跨 crate 不可见
+        边界是 crate 不是包
+      pub 括号 super
+        父模块及其后代可见
+        适合父子间共享
+      pub self 与 pub in path
+        pub self 等价私有
+        pub in path 指定祖先模块
+      实测报错
+        跨模块访问私有项 报 E0603
+        跨模块调用私有方法 报 E0624
+        同模块调私有方法其实合法
+        同包不同 crate 用 pub crate 也报 E0624
+    7 工作空间
+      结构与成员
+        根 Cargo.toml 写 workspace
+        members 列出成员包
+        支持通配符
+      继承配置
+        workspace 点 package 共享元数据
+        workspace 点 dependencies 统一依赖
+        成员用 点 workspace 等于 true 继承
+      收益
+        共享 target 目录
+        共享 Cargo.lock 版本一致
+        一条命令构建全部
+        统一 profile 配置
+      注意事项
+        profile 只在根生效
+        成员里写会警告被忽略
+    8 feature 与条件编译
+      定义与使用
+        features 段定义开关
+        default 是默认集合
+        cfg feature 等于 名字 控制代码
+      常见条件
+        cfg test 只在测试时编译
+        cfg debug assertions 调试构建
+        cfg target os 按平台
+        all 与 any 组合条件
+      注意事项
+        feature 应当是可加的
+        不要做互斥开关
+        会影响依赖图与编译时间
+    9 测试与示例布局
+      单元测试
+        写在 src 里的 cfg test 模块
+        属于同一个 crate
+        能访问私有项与 pub crate
+      集成测试
+        tests 下每个文件独立 crate
+        只能访问公开 API
+        用包名导入
+      示例与基准
+        examples 用 cargo run example
+        benches 用于性能测试
+      cargo test 的行为
+        分别编译并运行每个目标
+        二进制里的测试也会单独跑
+        所以会看到 0 passed 的行
+    10 常见报错速查
+      声明与文件类
+        E0433 没声明 mod 就用路径
+        E0583 声明了但文件不存在
+        E0761 两个候选文件冲突
+        无报错 文件存在但没声明会被忽略
+      路径与导入类
+        E0432 导入路径不存在
+        E0423 最后一段写成了模块名
+        E0659 通配导入带来歧义
+        E0255 同名重复定义
+      可见性类
+        E0603 访问私有项
+        E0624 调用私有方法
+        E0365 pub use 私有模块
+        E0428 同名模块定义两次
+      trait 作用域类
+        E0599 方法找不到
+        原因是 trait 不在作用域
+      cargo 类
+        cargo run 不知道跑哪个二进制
+        包误认为在工作空间里
+    11 写法注意事项
+      目录组织
+        一个文件一个职责
+        lib.rs 只做声明与汇总
+        有子模块才建目录
+        项目内保持一致风格
+      API 设计
+        默认私有按需放宽
+        内部共享用 pub crate
+        父子共享用 pub super
+        对外用 pub use 做扁平入口
+      use 整理
+        按标准库 外部 crate 本 crate 分组
+        避免通配导入
+        同名冲突用 as
+      千万别做
+        以为文件放那儿就能用
+        用 use 代替 mod
+        把二进制当库用
+        依赖 pub crate 跨 crate
+        在成员包写 profile
+        用 feature 做互斥开关
+    12 常见误区
+      概念
+        包不等于 crate
+        mod 和 use 完全不同
+        文件放对目录不等于自动成为模块
+        tests 下是 crate 不是模块
+      可见性
+        pub 不是一路透明
+        pub crate 边界是 crate 不是包
+        私有方法同模块内可以调
+        子模块能看父模块私有项
+      导入
+        通配导入易致歧义
+        pub use 不能导出私有模块
+        trait 不在作用域则方法不可用
+        use 最后一段决定引进什么
+      工程
+        二进制之间不能互相 use
+        工作空间不会让依赖更复杂
+        feature 不只是开关还影响依赖图
+    13 自测清单
+      概念区分
+        包 crate 模块三者关系
+        一个包最多几个库 crate
+        两个二进制能否互相 use
+        tests 下是模块还是 crate
+      模块与文件
+        mod 与 use 的区别
+        foo.rs 与 foo mod.rs 同时存在会怎样
+        文件存在但没写 mod 会怎样
+        嵌套子模块文件该放哪
+      路径与可见性
+        crate 与 super 与 self 各指什么
+        三档可见性范围
+        子模块能否访问父模块私有项
+        同包不同 crate 能否用 pub crate
+        同模块调私有方法会报错吗
+      导入与再导出
+        pub use 最后一段写模块名会怎样
+        prelude 为何要导出 trait
+        星号导入的风险
+      工作空间与 feature
+        工作空间共享什么
+        成员里写 profile 会怎样
+        feature 为什么要可加
+      工程实践
+        多 bin 时 cargo run 报错怎么修
+        子目录包被上层工作空间认领怎么办

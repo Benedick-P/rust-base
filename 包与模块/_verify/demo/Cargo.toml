@@ -1,0 +1,40 @@
+[package]
+name = "demo"
+version = "0.1.0"
+edition = "2021"
+description = "包 / crate / 模块 的验证示例（一个包、两个 crate、多个模块）"
+authors = ["rust-base"]
+license = "MIT OR Apache-2.0"
+rust-version = "1.70"
+keywords = ["demo", "modules"]
+categories = ["learning"]
+
+# 有多个 [[bin]] 时，`cargo run` 不知道跑哪个 → 用 default-run 指定默认目标
+# 不写这个键的话，`cargo run` 会报：
+#   error: `cargo run` could not determine which binary to run.
+default-run = "demo"
+
+# 依赖：这里故意不加任何外部依赖，保证离线可编译
+[dependencies]
+
+# feature 开关：`cargo test --features extra` 才会启用
+[features]
+default = []
+extra = []
+
+# 显式声明编译目标（实际上 src/lib.rs 与 src/main.rs 会被自动发现，
+# 写出来是为了让你看清楚「一个包可以有几个 crate」）
+[lib]
+name = "demo"          # 库 crate 名字（也是 `use demo::...` 里的名字）
+path = "src/lib.rs"
+
+[[bin]]
+name = "demo"          # 二进制 crate 名字（cargo run 默认跑这个）
+path = "src/main.rs"
+
+[[bin]]
+name = "second"        # src/bin/second.rs
+path = "src/bin/second.rs"
+
+[profile.release]
+opt-level = 2

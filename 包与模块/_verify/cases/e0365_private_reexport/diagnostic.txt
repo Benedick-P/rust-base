@@ -1,0 +1,5 @@
+    Checking e0365_private_reexport v0.1.0 (D:\rust学习\包与模块\_verify\cases\e0365_private_reexport)
+src\main.rs:11:9: error[E0365]: `inner` is only public within the crate, and cannot be re-exported outside: re-export of crate public `inner`
+src\main.rs:11:9: warning: unused import: `inner as inner_public`
+warning: `e0365_private_reexport` (bin "e0365_private_reexport") generated 1 warning
+error: could not compile `e0365_private_reexport` (bin "e0365_private_reexport") due to 1 previous error; 1 warning emitted

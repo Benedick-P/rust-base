@@ -1,0 +1,7 @@
+[package]
+name = "e0432_unresolved"
+version = "0.1.0"
+edition = "2021"
+
+# 声明为独立包，避免被上层 _verify 的 workspace 影响
+[workspace]

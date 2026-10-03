@@ -9,20 +9,24 @@ node_modules/
 **/node_modules/
 
 # ---- 编译出来的可执行文件与调试符号 ----
-# 注意：只忽略 _verify/cases 里为了验证报错而临时编译出的产物，
+# 注意：只忽略为了验证报错而临时编译出的产物，
 #      不要忽略真正的源码 .rs 文件。
 *.exe
 *.pdb
 *.rlib
 *.rmeta
+*.o
 **/cases/*.exe
 **/cases/*.pdb
+**/cases/*.o
 
 # ---- 浏览器临时数据（无头 Chrome 校验用的 profile）----
 chrome-prof*/
 chrome-profile*/
 **/chrome-prof*/
 **/chrome-profile*/
+**/.chrome-prof*/
+**/.chrome-profile*/
 
 # ---- git 自身 ----
 .gitignore.bak

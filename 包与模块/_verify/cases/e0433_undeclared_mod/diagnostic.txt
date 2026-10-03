@@ -1,0 +1,3 @@
+    Checking e0433_undeclared_mod v0.1.0 (D:\rust学习\包与模块\_verify\cases\e0433_undeclared_mod)
+src\main.rs:6:13: error[E0433]: cannot find module or crate `foo` in this scope: use of unresolved module or unlinked crate `foo`
+error: could not compile `e0433_undeclared_mod` (bin "e0433_undeclared_mod") due to 1 previous error

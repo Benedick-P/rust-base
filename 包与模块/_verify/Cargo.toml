@@ -1,0 +1,13 @@
+[workspace]
+# 工作空间：一个 Cargo.toml 管理多个包，成员共享 target/ 与 Cargo.lock
+members = ["demo", "unit_tests"]
+resolver = "2"
+
+# 工作空间级别的依赖版本统一（这里没有外部依赖，仅作示范）
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[workspace.dependencies]
+# 示范：成员里可以写 `demo.workspace = true` 复用这里的定义
+demo = { path = "demo", features = ["extra"] }

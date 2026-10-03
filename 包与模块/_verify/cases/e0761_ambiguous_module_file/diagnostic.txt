@@ -1,0 +1,3 @@
+    Checking e0761_ambiguous_module_file v0.1.0 (D:\rust学习\包与模块\_verify\cases\e0761_ambiguous_module_file)
+src\lib.rs:13:1: error[E0761]: file for module `thing` found at both "src\thing.rs" and "src\thing\mod.rs"
+error: could not compile `e0761_ambiguous_module_file` (lib) due to 1 previous error

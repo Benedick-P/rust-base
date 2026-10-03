@@ -1,0 +1,3 @@
+    Checking e0428_duplicate_mod v0.1.0 (D:\rust学习\包与模块\_verify\cases\e0428_duplicate_mod)
+src\main.rs:9:1: error[E0428]: the name `dup` is defined multiple times: `dup` redefined here
+error: could not compile `e0428_duplicate_mod` (bin "e0428_duplicate_mod") due to 1 previous error

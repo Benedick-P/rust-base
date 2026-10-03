@@ -1,0 +1,3 @@
+    Checking e0603_private v0.1.0 (D:\rust学习\包与模块\_verify\cases\e0603_private)
+src\main.rs:13:12: error[E0603]: function `hidden` is private: private function
+error: could not compile `e0603_private` (bin "e0603_private") due to 1 previous error

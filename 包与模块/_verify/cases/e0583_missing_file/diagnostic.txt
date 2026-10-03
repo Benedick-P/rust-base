@@ -1,0 +1,3 @@
+    Checking e0583_missing_file v0.1.0 (D:\rust学习\包与模块\_verify\cases\e0583_missing_file)
+src\lib.rs:1:1: error[E0583]: file not found for module `missing_mod`
+error: could not compile `e0583_missing_file` (lib) due to 1 previous error

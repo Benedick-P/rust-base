@@ -1,0 +1,5 @@
+    Checking e0659_glob_ambiguous v0.1.0 (D:\rust学习\包与模块\_verify\cases\e0659_glob_ambiguous)
+src\main.rs:21:5: error[E0659]: `f` is ambiguous: ambiguous name
+src\main.rs:16:5: warning: unused import: `b::*`
+warning: `e0659_glob_ambiguous` (bin "e0659_glob_ambiguous") generated 1 warning
+error: could not compile `e0659_glob_ambiguous` (bin "e0659_glob_ambiguous") due to 1 previous error; 1 warning emitted

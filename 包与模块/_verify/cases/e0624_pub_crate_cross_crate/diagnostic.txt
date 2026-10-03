@@ -1,0 +1,5 @@
+libdemo\src\lib.rs:9:19: warning: method `bump` is never used
+warning: `libdemo` (lib) generated 1 warning
+    Checking app v0.1.0 (D:\rust学习\包与模块\_verify\cases\e0624_pub_crate_cross_crate\app)
+app\src\main.rs:6:7: error[E0624]: method `bump` is private: private method
+error: could not compile `app` (bin "app") due to 1 previous error
