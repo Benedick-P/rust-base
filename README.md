@@ -1,6 +1,6 @@
 # Rust Base · 基础学习笔记
 
-Rust 基础三大主题的中文学习资料：**讲义 + 交互式思维导图 + 自测练习 + 可复现验证工程**。
+Rust 基础四大主题的中文学习资料：**讲义 + 交互式思维导图 + 自测练习 + 可复现验证工程**。
 
 所有代码都在 **rustc 1.98.1 (edition 2021)** 上真实编译运行过；
 讲义里引用的每一个报错码、panic 信息，都能在对应目录的 `_verify/cases/` 里亲手复现。
@@ -13,7 +13,8 @@ Rust 基础三大主题的中文学习资料：**讲义 + 交互式思维导图 
 rust-base/
 ├── 所有权/       所有权 · 引用与借用
 ├── 控制流/       if / match / 循环 / 标签
-└── 数据类型/     标量 / 字符串 / 集合 / struct / enum
+├── 数据类型/     标量 / 字符串 / 集合 / struct / enum
+└── 包与模块/     包 / crate / 模块 / 可见性 / 工作空间 / feature
 ```
 
 每个主题目录的结构一致：
@@ -53,6 +54,15 @@ rust-base/
 - **字符串**：`String` 不能下标；切片必须落在**字符边界**；`len()` 是字节数
 - **集合与自定义类型**：`Vec` / `HashMap` / struct / enum；递归类型要 `Box`；`f64` 不能当键也不能 `sort()`
 
+### 4. 包、Crate 与模块
+
+- **三层概念**：包（Cargo 打包单位）→ crate（编译单位）→ 模块（命名空间与可见性边界）
+- **一个包可有多个 crate**：1 个库 crate（`src/lib.rs`）+ N 个二进制 crate（`src/main.rs`、`src/bin/*.rs`）
+- **`mod` 是声明，`use` 是导入**：没写 `mod` 的文件会被**静默忽略**（不报错，这是最反直觉的一点）
+- **可见性四档**：默认私有 / `pub` / `pub(crate)` / `pub(super)`；`pub(crate)` 的边界是 **crate 不是包**
+- **典型报错**：E0433、E0583、E0761、E0603、E0624、E0659、E0365、E0428
+- **工程要点**：工作空间统一依赖、`default-run`、`[features]` + `#[cfg(feature)]`、`tests/` 是独立 crate
+
 ---
 
 ## 怎么用这份资料
@@ -84,8 +94,9 @@ rustc --edition 2021 cases\panic_vec_index.rs -o t.exe; .\t.exe
 - `cases/exercises_ok.rs` —— 自测练习的参考答案
 - `cases/e*.rs` —— **故意写错**的样例，每个复现一类编译报错
 - `cases/panic_*.rs` —— 能编译、运行才 panic 的样例（越界、除零、溢出、字符边界…）
-- `cases/*.err.txt` —— 对应的**真实编译器输出 / panic 输出**
+- `cases/*.err.txt` —— 对应的**真实编译器输出 / panic 输出**（由 `capture.ps1` 生成）
 - `cases/_summary.txt` —— 全部样例的结果汇总表
+- `capture.ps1` —— 重新捕获报错：`pwsh -File capture.ps1 -RunIfCompiles`
 
 > `target/`、`node_modules/` 等构建产物已在 `.gitignore` 中排除。
 > `cargo test` 需要访问 `~/.cargo`；若在受限环境中失败，可直接用 `rustc` 单文件编译。
@@ -94,14 +105,19 @@ rustc --edition 2021 cases\panic_vec_index.rs -o t.exe; .\t.exe
 
 ## 环境
 
-| 工具 | 版本 |
-|------|------|
-| rustc | 1.98.1 |
-| cargo | 1.98.1 |
-| edition | 2021 |
+| 工具 | 版本 | 说明 |
+|------|------|------|
+| rustc | 1.98.1 | 讲义中所有示例与报错的编译环境 |
+| cargo | 1.98.1 | `cargo test` 跑验证工程 |
+| edition | 2021 | 需要 edition 2024 的特性已单独标注（如 let chains） |
+| PowerShell | 7+（`pwsh`） | 运行 `_verify/capture.ps1` 等脚本；PS7 原生 UTF-8，捕获报错无需转码 |
+
+> `_verify/capture.ps1` 会重新编译 `cases/*.rs`，把真实的编译器输出 / panic 输出写进同名 `.err.txt`。
+> 它需要 PowerShell 7：PS5.1 会把原生命令的 stderr 写成 UTF-16 并额外包一层 `CategoryInfo` 之类的行，
+> 生成的文本会不干净（这也是旧版本资料里那些"清理包装行"代码的由来）。
 
 ---
 
 ## 后续可延伸的主题
 
-错误处理（`Result` / `?` / `panic!`）· 泛型与 trait · 生命周期深入 · 智能指针 · 迭代器 · 并发（`Send` / `Sync`）· 模块与包管理
+错误处理（`Result` / `?` / `panic!`）· 泛型与 trait · 生命周期深入 · 智能指针 · 迭代器 · 并发（`Send` / `Sync`）
