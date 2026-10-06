@@ -1,0 +1,13 @@
+e0004_non_exhaustive	编译错误	E0004	error[E0004]: non-exhaustive patterns: `Err(_)` not covered || = note: the matched value is of type `Result<i32, String>`
+e0271_missing_from	编译错误	E0271	error[E0271]: type mismatch resolving `<i32 as FromStr>::Err == MyError`
+e0308_question_mark_type	编译错误	E0277	error[E0277]: the `?` operator can only be used in a function that returns `Result` or `Option` (or another type that implements `FromResidual`)
+e0369_boxed_error_eq	编译错误	E0369	error[E0369]: binary operation `==` cannot be applied to type `Result<i32, Box<dyn std::error::Error>>`
+e0599_copied_on_option	编译错误	E0599	error[E0599]: no method named `copied` found for enum `Option<i32>` in the current scope
+e0599_result_replace	编译错误	E0599	error[E0599]: no method named `replace` found for enum `Result<T, E>` in the current scope || help: consider using `Result::expect` to unwrap the `String` value, panicking if the value is a `Result::Err`
+panic_assert	运行时 panic	exit 101	assertion `left == right` failed: 端口必须是偶数，实际是 3
+panic_custom	运行时 panic	exit 101	无法解析为数字: abc
+panic_divide_by_zero	运行时 panic	exit 101	attempt to divide by zero
+panic_expect	运行时 panic	exit 101	配置文件缺少 name 字段
+panic_index	运行时 panic	exit 101	index out of bounds: the len is 3 but the index is 5
+panic_unwrap_err	运行时 panic	exit 101	called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+panic_unwrap_none	运行时 panic	exit 101	called `Option::unwrap()` on a `None` value

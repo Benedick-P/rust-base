@@ -1,0 +1,9 @@
+=== PANIC exit 101 ===
+check_port(2) 通过
+
+thread 'main' (38904) panicked at D:\rust学习\错误处理\_verify\cases\panic_assert\main.rs:5:5:
+assertion `left == right` failed: 端口必须是偶数，实际是 3
+  left: 1
+ right: 0
+check_port(80) 通过
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

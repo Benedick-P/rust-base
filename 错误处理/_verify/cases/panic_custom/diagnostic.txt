@@ -1,0 +1,7 @@
+=== PANIC exit 101 ===
+parse_or_die("42") = 42
+
+thread 'main' (33004) panicked at D:\rust学习\错误处理\_verify\cases\panic_custom\main.rs:8:19:
+无法解析为数字: abc
+安全版本: Err("解析失败: invalid digit found in string")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

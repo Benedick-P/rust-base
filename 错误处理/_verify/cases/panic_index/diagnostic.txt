@@ -1,0 +1,7 @@
+=== PANIC exit 101 ===
+越界了，安全处理
+
+thread 'main' (39068) panicked at D:\rust学习\错误处理\_verify\cases\panic_index\main.rs:15:21:
+index out of bounds: the len is 3 but the index is 5
+get(5) = None
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

@@ -1,0 +1,20 @@
+=== COMPILE_FAILED ===
+error[E0599]: no method named `replace` found for enum `Result<T, E>` in the current scope
+   --> D:\rust学习\错误处理\_verify\cases\e0599_result_replace\main.rs:18:16
+    |
+ 18 |     let _ = r2.replace(Ok(1));
+    |                ^^^^^^^ method not found in `Result<i32, String>`
+    |
+note: the method `replace` exists on the type `String`
+   --> C:\Users\Administrator\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\str.rs:308:5
+    |
+308 |     pub fn replace<P: Pattern>(&self, from: P, to: &str) -> String {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: consider using `Result::expect` to unwrap the `String` value, panicking if the value is a `Result::Err`
+    |
+ 18 |     let _ = r2.expect("REASON").replace(Ok(1));
+    |               +++++++++++++++++
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0599`.

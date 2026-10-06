@@ -1,0 +1,7 @@
+=== PANIC exit 101 ===
+Ok(5)
+
+thread 'main' (46536) panicked at D:\rust学习\错误处理\_verify\cases\panic_divide_by_zero\main.rs:21:20:
+attempt to divide by zero
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Err("除数不能为 0")

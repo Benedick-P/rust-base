@@ -1,0 +1,268 @@
+%% Rust 错误处理 · 思维导图（Mermaid mindmap）
+%%
+%% 用法：把本文件内容粘到 https://mermaid.live 即可看图；
+%%       Obsidian / Typora / GitHub 的 mermaid 代码块也支持 mindmap 图类型。
+%% 说明：为保证各版本 Mermaid 都能解析，节点文本避开了括号 / 冒号 / 引号等特殊字符。
+%%       完整可交互版请用同目录的「错误处理-思维导图.html」。
+
+mindmap
+  root))Rust 错误处理((
+    0 总纲
+      两大类失败
+        panic 不可恢复
+        Result 可恢复
+        能用 Result 就别 panic
+      判断口诀
+        调用方有办法处理 用 Result
+        调用方无能为力 用 panic
+        逻辑上不可能失败 用 expect 写理由
+      标准库的演变
+        早期文档常写非法输入就 panic
+        现在标准库改为返回 Result
+        新代码跟 Result 这一侧
+    1 panic 机制
+      基本形态
+        panic 加字面量 载荷是静态字符串
+        panic 加格式化参数 载荷是 String
+        panic 空参数 没有信息
+      载荷类型影响捕获
+        静态字符串要 downcast 成 str
+        格式化结果是 String
+        catch unwind 里要分别处理
+      两种策略
+        unwind 是默认 逐层展开跑 Drop
+        abort 直接终止进程
+        abort 无法 catch unwind
+      意外 panic 的来源
+        None 上 unwrap
+        Err 上 unwrap
+        expect 带自定义信息
+        下标越界
+        整数除零
+        断言失败
+      退出码
+        panic 退出码是 101
+        main 返回 Err 退出码是 1
+        两者要区分
+      断言家族
+        assert 与 assert eq 与 assert ne
+        debug assert 只在调试构建
+        unreachable 与 unimplemented 与 todo
+        断言说明会出现在输出里
+    2 Result 与 Option
+      两者不是一回事
+        Option 表示可能没有值 是正常情况
+        Result 表示失败 带原因
+        Option 转 Result 用 ok or
+      unwrap 家族
+        unwrap 失败就 panic
+        expect 带自定义信息
+        unwrap or 用默认值
+        unwrap or else 惰性求值
+        unwrap or default 用 Default
+      所有权陷阱
+        unwrap 家族会消耗原值
+        之后再使用会报 E0382
+        修法是分开绑定或 as ref
+      组合子
+        map 只作用于成功值
+        map err 只作用于错误
+        and then 串起多个可能失败的步骤
+        or else 失败时换一条路
+        filter 加条件
+        flatten 拍平嵌套
+      or else 的类型要求
+        闭包必须返回同类型 Result
+        只写 Ok 会报 E0282
+        要显式标注错误类型
+      借用版 API
+        as ref 与 as mut 不消耗原值
+        Result 没有 replace 方法
+        用 mem 的 replace 代替
+        Option 有 replace
+      copied 的限制
+        只对 Option 引用可用
+        对 Option i32 调用报 E0599
+        先 as ref 再 copied
+    3 问号运算符
+      语义
+        失败就提前返回
+        等价于 match 加 return
+        会自动调用 From 做类型转换
+      两条硬性要求
+        只能在返回 Result 或 Option 的函数里用
+        错误类型必须能通过 From 转换
+      违反要求的报错
+        返回 i32 里用问号 报 E0277
+        缺 From 实现 报 E0271
+        注意错误码不是 E0277
+      用在 Option 上
+        None 时直接返回 None
+        Result 转 Option 用 ok
+        Option 转 Result 用 ok or
+      常见形态
+        当语句用 失败就返回
+        当表达式用 取成功值
+        先 map err 再问号
+      在 main 里用问号
+        main 返回 Result 即可
+        返回 Err 时打印 Debug 格式
+        字符串错误会带引号
+      main 返回值的要求
+        必须实现 Termination
+        单元类型 与 Result 与 ExitCode 与 u8 都行
+        ExitCode 没有 as u8 方法
+        想拿数值就让函数返回 u8
+      推荐分工
+        main 只做参数解析与报告
+        逻辑写在返回 Result 的函数里
+        错误用 eprintln 输出
+        逐层打印错误链
+    4 自定义错误类型
+      四件套
+        Debug 必须实现
+        Display 给用户看
+        Error 接入标准库体系
+        From 让问号自动转换
+      不实现的后果
+        没有 Debug 则 unwrap 与 main 返回 Result 都不行
+        没有 Display 则无法打印人类可读信息
+        没有 Error 则不能放入 Box dyn Error
+        没有 From 则问号报 E0271
+      枚举还是结构体
+        枚举用于原因有限且互斥
+        结构体用于单一原因或要带上下文
+      错误链
+        source 返回底层错误
+        可以逐层打印原因
+        Display 只描述本层信息
+        底层原因交给 source
+    5 跨边界传播
+      Box dyn Error
+        不定义错误类型也能用问号
+        字符串可以直接 into
+        任何实现 Error 的类型都能进来
+        缺点 类型信息丢失
+        调用方无法 match 具体错误
+      不能比较
+        Box dyn Error 没有 PartialEq
+        直接 assert eq 报 E0369
+        改用 match 或 is ok 加 unwrap
+      库与应用的选型
+        库用具体错误枚举 调用方能分支
+        应用用 Box dyn Error 或 anyhow
+        错误种类少可以用静态字符串
+        需要上下文就写包装类型
+    6 测试与捕获
+      测试 panic
+        should panic 属性
+        expected 检查信息子串
+        用 matches 宏匹配错误变体
+        unwrap err 取错误值
+      catch unwind
+        把 panic 转成 Result
+        仅用于隔离第三方代码
+        需要 unwind 策略
+        闭包要满足 UnwindSafe
+        Drop 不保证跑完
+        不是 try catch
+    7 常见报错速查
+      问号相关
+        E0271 缺 From 实现
+        E0277 在非 Result 函数里用问号
+      匹配与比较
+        E0004 漏了 Err 分支
+        E0369 Box dyn Error 不能比较
+      方法不存在
+        E0599 Option 的 copied 用错
+        E0599 Result 没有 replace
+        E0599 ExitCode 没有 as u8
+      推断与所有权
+        E0282 or else 闭包推不出错误类型
+        E0382 unwrap 后原值已被消耗
+      运行时 panic
+        None 上 unwrap
+        Err 上 unwrap
+        下标越界
+        整数除零
+        断言失败
+        退出码 101
+    8 写法注意事项
+      函数签名
+        库返回具体错误类型
+        应用内部可用 Box dyn Error
+        查询用 Option
+        避免返回 Result 加字符串
+        避免返回 Result 加单元 丢原因
+      该 panic 的场合
+        逻辑上不可能发生
+        不变量被破坏
+        初始化失败无法继续
+        expect 优于 unwrap 写明理由
+      让问号顺手
+        实现 From 自动转换
+        用 map err 加上下文
+        Option 转 Result 再问号
+        昂贵默认值用惰性求值
+      main 的分工
+        逻辑放 run 函数
+        main 只报告加退出码
+        错误输出到 stderr
+        库代码不要 process exit
+      避免的写法
+        用 panic 处理可预期失败
+        用 catch unwind 当异常
+        一路 unwrap 到最上层
+        忽略 must use 的 Result
+    9 常见误区
+      取值
+        unwrap 不是取值 失败会 panic
+        Option 不是错误
+        expect 与 unwrap 都有 panic 风险
+        Option 的 expect 信息不含 None 字样
+      问号
+        问号不能转换任何错误类型
+        问号不能用在任意函数里
+        main 里其实可以用问号
+      退出码与输出
+        panic 退出码是 101 不是 1
+        main 返回 Err 打印的是 Debug
+        字符串错误会带引号
+      trait 与类型
+        只实现 Display 不够 还要 Debug
+        Box dyn Error 不能比较
+        Result 没有 replace
+        copied 只对引用 Option 可用
+        不实现 source 会丢错误链
+      惰性
+        unwrap or else 才是惰性
+        unwrap or 参数总会先求值
+    10 自测清单
+      概念
+        panic 与 Result 各自适合什么
+        Option 与 Result 的区别
+        panic 与 main 返回 Err 的退出码
+        unwind 与 abort 的差别
+      API
+        unwrap 家族各方法区别
+        惰性求值为何重要
+        map 与 map err 与 and then 与 or else
+        copied 为何不能用在 Option i32
+        Result 为何没有 replace
+      问号
+        问号对 Option 能用吗
+        问号做了什么自动转换
+        返回 i32 里用问号报什么错
+        缺 From 报什么错误码
+        main 里怎么用问号
+      自定义错误
+        要实现哪几个 trait
+        不实现 source 会怎样
+        Display 该写什么
+        库与应用分别怎么选
+      实践
+        什么时候该 panic
+        expect 比 unwrap 好在哪
+        怎么把 Option 与 Result 串起来
+        为什么不该用 catch unwind
+        为什么不建议返回 Result 加字符串

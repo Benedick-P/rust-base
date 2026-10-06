@@ -1,6 +1,6 @@
 # Rust Base · 基础学习笔记
 
-Rust 基础四大主题的中文学习资料：**讲义 + 交互式思维导图 + 自测练习 + 可复现验证工程**。
+Rust 基础五大主题的中文学习资料：**讲义 + 交互式思维导图 + 自测练习 + 可复现验证工程**。
 
 所有代码都在 **rustc 1.98.1 (edition 2021)** 上真实编译运行过；
 讲义里引用的每一个报错码、panic 信息，都能在对应目录的 `_verify/cases/` 里亲手复现。
@@ -14,7 +14,8 @@ rust-base/
 ├── 所有权/       所有权 · 引用与借用
 ├── 控制流/       if / match / 循环 / 标签
 ├── 数据类型/     标量 / 字符串 / 集合 / struct / enum
-└── 包与模块/     包 / crate / 模块 / 可见性 / 工作空间 / feature
+├── 包与模块/     包 / crate / 模块 / 可见性 / 工作空间 / feature
+└── 错误处理/     panic / Result / ? / 自定义错误 / 错误链
 ```
 
 每个主题目录的结构一致：
@@ -62,6 +63,15 @@ rust-base/
 - **可见性四档**：默认私有 / `pub` / `pub(crate)` / `pub(super)`；`pub(crate)` 的边界是 **crate 不是包**
 - **典型报错**：E0433、E0583、E0761、E0603、E0624、E0659、E0365、E0428
 - **工程要点**：工作空间统一依赖、`default-run`、`[features]` + `#[cfg(feature)]`、`tests/` 是独立 crate
+
+### 5. 错误处理
+
+- **两大类失败**：`panic!`（不可恢复，退出码 **101**）vs `Result`（可恢复，`main` 返回 `Err` 退出码 **1**）
+- **判据**：调用方"有办法处理" → `Result`；"无能为力/程序有 bug" → `panic!`；逻辑上不可能失败 → `expect("说明前提")`
+- **`?` 运算符**：失败即提前返回，并自动做 `From` 转换；两条硬性要求（返回 `Result`/`Option` + 实现 `From`）
+- **自定义错误四件套**：`Debug` + `Display` + `Error`（含 `source()` 错误链）+ `From`（让 `?` 自动转换）
+- **典型报错**：E0271（缺 `From`）、E0277（非 Result 函数里用 `?`）、E0004、E0369、E0599
+- **易错点**：`unwrap` 家族会消耗原值；`Result` 没有 `replace`；`Option::copied` 只对 `Option<&T>`；`Box<dyn Error>` 不能 `==`；`catch_unwind` 不是 try/catch
 
 ---
 
@@ -120,4 +130,4 @@ rustc --edition 2021 cases\panic_vec_index.rs -o t.exe; .\t.exe
 
 ## 后续可延伸的主题
 
-错误处理（`Result` / `?` / `panic!`）· 泛型与 trait · 生命周期深入 · 智能指针 · 迭代器 · 并发（`Send` / `Sync`）
+泛型与 trait · 生命周期深入 · 智能指针 · 迭代器 · 并发（`Send` / `Sync`）

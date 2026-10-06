@@ -1,0 +1,13 @@
+e0004_non_exhaustive	compile_error	E0004
+e0271_missing_from	compile_error	E0271
+e0308_question_mark_type	compile_error	E0277
+e0369_boxed_error_eq	compile_error	E0369
+e0599_copied_on_option	compile_error	E0599
+e0599_result_replace	compile_error	E0599
+panic_assert	panic	exit 101
+panic_custom	panic	exit 101
+panic_divide_by_zero	panic	exit 101
+panic_expect	panic	exit 101
+panic_index	panic	exit 101
+panic_unwrap_err	panic	exit 101
+panic_unwrap_none	panic	exit 101

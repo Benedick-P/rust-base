@@ -1,0 +1,19 @@
+[package]
+name = "errdemo"
+version = "0.1.0"
+edition = "2021"
+description = "错误处理验证示例：panic / Result / ? / 自定义错误 / Box<dyn Error>"
+default-run = "errdemo"
+
+[lib]
+name = "errdemo"
+path = "src/lib.rs"
+
+[[bin]]
+name = "errdemo"
+path = "src/main.rs"
+
+[dependencies]
+
+[profile.dev]
+panic = "unwind"     # 默认值：panic 可被 catch_unwind 捕获

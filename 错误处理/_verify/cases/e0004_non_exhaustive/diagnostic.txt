@@ -1,0 +1,25 @@
+=== COMPILE_FAILED ===
+error[E0004]: non-exhaustive patterns: `Err(_)` not covered
+   --> D:\rust学习\错误处理\_verify\cases\e0004_non_exhaustive\main.rs:7:19
+    |
+  7 |     let v = match r {
+    |                   ^ pattern `Err(_)` not covered
+    |
+note: `Result<i32, String>` defined here
+   --> C:\Users\Administrator\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\result.rs:557:1
+    |
+557 | pub enum Result<T, E> {
+    | ^^^^^^^^^^^^^^^^^^^^^
+...
+566 |     Err(#[stable(feature = "rust1", since = "1.0.0")] E),
+    |     --- not covered
+    = note: the matched value is of type `Result<i32, String>`
+help: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown
+    |
+  8 ~         Ok(x) => x,
+  9 ~         Err(_) => todo!(),
+    |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0004`.

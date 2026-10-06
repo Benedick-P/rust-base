@@ -1,0 +1,13 @@
+=== COMPILE_FAILED ===
+error[E0599]: no method named `copied` found for enum `Option<i32>` in the current scope
+ --> D:\rust学习\错误处理\_verify\cases\e0599_copied_on_option\main.rs:9:27
+  |
+9 |     println!("{:?}", some.copied());
+  |                          -^^^^^^--
+  |                          ||
+  |                          |this method is only available on `Option<&_>`
+  |                          help: consider removing the `.copied()` call
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0599`.

@@ -1,0 +1,7 @@
+=== PANIC exit 101 ===
+unwrap_or = -1
+
+thread 'main' (28632) panicked at D:\rust学习\错误处理\_verify\cases\panic_unwrap_err\main.rs:11:28:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+is_err = true
